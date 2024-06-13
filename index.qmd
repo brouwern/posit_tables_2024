@@ -277,7 +277,10 @@ dist_mat_pd2.head()
 ```
 
 ```{python}
-pops_drop = ["ASW", "ESN", "CHS", "CEU", "GIH"]
+pops_drop = ["ASW", "ESN",  # Africa
+"CHS", # Han Chinese
+"CEU", #Utah europena-Amrican 
+"GIH"] #Gujarati Indians in Houston, Texas, USA [GIH]
 ```
 
 ```{python}
@@ -294,33 +297,13 @@ dist_mat_pd2 = dist_mat_pd2[rows_drop.values]
 ```
 
 
-```{python, eval = F}
-import polars as pl
-
-from great_tables import GT, from_column, style, loc
-from great_tables.data import airquality
-
-air_head = airquality.head()
-
-gt_air = GT(air_head)
-gt_pl_air = GT(pl.from_pandas(air_head))
-gt_air.tab_style(
-    style=style.text(color="green", font="Times New Roman", weight="bold"),
-    locations=loc.body(columns="Solar_R")
-)
-```
-
-```{python, eval = F}
-GT(dist_mat_pd2).tab_style(style=style.text(size = "0"),locations=loc.body(columns=num_cols))
-```
-
 
 ```{python, eval = T}
 from great_tables import GT, md, html, style, loc
 # make my table
 (
     GT(dist_mat_pd2).tab_style(
-        style=style.text(size = "1"),
+        style=style.text(size = "0"),
         locations=loc.body(columns=num_cols)
     )
     .tab_header(title="Euclidean distance between 1000 Genomes populations",
