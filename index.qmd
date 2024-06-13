@@ -278,14 +278,6 @@ dist_mat_pd2.head()
 
 
 ```{python}
-#temp = dist_mat_pd[["sup_pop","pop","ethnic_cultural_group","country_sampling","icon"]]
-#(
-#    GT(temp)
-#    .fmt_image("icon", path="icons/")
-#)
-```
-
-```{python}
 from great_tables import GT, md, html
 # make my table
 (
