@@ -1,27 +1,27 @@
 ACB,ASW,ESN,GWD,LWK,MSL,YRI,CLM,MXL,PEL,PUR,CDX,CHB,CHS,JPT,KHV,CEU,FIN,GBR,IBS,TSI,BEB,GIH,ITU,PJL,STU,oneKG_pop,country/Location,pop_details,ethnic_cultural_group,sup_pop,sup_pop_alt,icon
-,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,ACB,Barbados,African Caribbean in Barbados,Afro-Caribbean,AFR,,barbados.png
-8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,ASW,Africa,African Ancestry in SW USA,African American,AFR,,pan_africa_flag.png
-4.0,17.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,ESN,Nigeria,Esan in Nigeria,Esan,AFR,,nigeria.png
-8.0,17.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,GWD,Gambia,Gambian in Western Division – Mandinka,Mandinka,AFR,AFR,gambia.png
-8.0,17.0,8.0,12.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,LWK,Kenya,"Luhya in Webuye, Kenya",Luhya,AFR,,kenya.png
-8.0,17.0,8.0,8.0,12.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,MSL,Sierra Leone,Mende in Sierra Leone,Mende,AFR,,sierra_leone.png
-8.0,17.0,8.0,12.0,12.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,YRI,Nigeria,"Yoruba in Ibadan, Nigeria",Yoruba,AFR,,nigeria.png
-54.0,46.0,62.0,58.0,62.0,62.0,62.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CLM,Colombia,"Colombian in Medellín, Colombia",Colombian,AMR,,colombia.png
-54.0,46.0,58.0,58.0,58.0,62.0,62.0,12.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,MXL,Mexico,"Mexican Ancestry in L.A. CA, USA",Mexican-American,AMR,AMR,mexico.png
-54.0,50.0,62.0,58.0,62.0,62.0,62.0,21.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,PEL,Peru,Peruvian in Lima Peru,Peruvian,AMR,,peru.png
-50.0,42.0,58.0,54.0,58.0,58.0,58.0,4.0,17.0,25.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,PUR,Puerto Rico,Puerto Rican in Puerto Rico,Puerto Rican,AMR,,puerto_rico.png
-67.0,67.0,75.0,71.0,71.0,75.0,75.0,58.0,46.0,50.0,62.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CDX,SE-Asia,"Chinese Dai in Xishuangbanna, China",Dai,EAS,,china.png
-71.0,67.0,75.0,71.0,71.0,75.0,75.0,62.0,46.0,50.0,62.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CHB,China-NE,"Han Chinese in Beijing, China",Han,EAS,EAS,china.png
-67.0,67.0,75.0,71.0,71.0,75.0,75.0,58.0,42.0,46.0,62.0,4.0,0.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CHS,China-SE,"Han Chinese - Southern, China",Han,EAS,EAS,china.png
-75.0,75.0,79.0,75.0,75.0,79.0,79.0,67.0,50.0,54.0,71.0,12.0,8.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,JPT,Japan,"Japanese in Tokyo, Japan",Japanese,EAS,,japan.png
-67.0,67.0,71.0,71.0,67.0,71.0,75.0,58.0,42.0,46.0,58.0,0.0,4.0,0.0,12.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,KHV,Vietnam,"Kinh in Ho Chi Minh City, Vietnam",Kinh,EAS,,vietnam.png
-67.0,58.0,75.0,71.0,75.0,79.0,79.0,21.0,33.0,38.0,17.0,79.0,79.0,79.0,88.0,75.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CEU,Western Europe,Utah Residents (CEPH) with Northern and Western European ancestry,European American,EUR,,USA.png
-75.0,62.0,79.0,75.0,79.0,83.0,83.0,29.0,46.0,46.0,29.0,83.0,88.0,83.0,92.0,83.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,FIN,Finland,Finnish in Finland,Finnish,EUR,,finland.png
-67.0,58.0,75.0,71.0,75.0,75.0,75.0,17.0,33.0,38.0,17.0,79.0,79.0,79.0,88.0,79.0,0.0,8.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,GBR,England/Scotland,British from England and Scotland,British / Scottish,EUR,EUR,UK.png
-58.0,50.0,67.0,67.0,67.0,71.0,71.0,8.0,25.0,29.0,4.0,67.0,67.0,67.0,75.0,62.0,8.0,25.0,12.0,,0.0,0.0,0.0,0.0,0.0,0.0,IBS,Spain,Iberian Populations in Spain,Spainish-Iberian,EUR,,spain.png
-62.0,50.0,67.0,67.0,67.0,71.0,71.0,12.0,25.0,33.0,8.0,71.0,71.0,71.0,79.0,67.0,8.0,21.0,12.0,0.0,,0.0,0.0,0.0,0.0,0.0,TSI,Italy,Toscani in Italia,Toscan-Italy,EUR,,italy.png
-46.0,38.0,54.0,50.0,54.0,54.0,50.0,29.0,29.0,33.0,29.0,58.0,58.0,58.0,62.0,54.0,46.0,58.0,46.0,33.0,38.0,,0.0,0.0,0.0,0.0,BEB,Bangladesh,Bengali in Bangladesh,Bengali,SAS,,bangladesh.png
-50.0,42.0,54.0,54.0,54.0,54.0,54.0,29.0,29.0,33.0,29.0,54.0,54.0,54.0,62.0,54.0,46.0,58.0,46.0,33.0,33.0,8.0,,0.0,0.0,0.0,GIH,Gujarat,"Gujarati Indians in Houston, Texas, USA",Gujarati,SAS,,india.png
-46.0,42.0,54.0,50.0,54.0,54.0,50.0,38.0,33.0,38.0,33.0,62.0,62.0,62.0,67.0,62.0,54.0,62.0,54.0,42.0,42.0,4.0,8.0,,0.0,0.0,ITU,Andhra Pradesh/Telangana,Indian Telugu in the U.K.,Telugu,SAS,SAS,india.png
-50.0,42.0,54.0,54.0,54.0,54.0,54.0,17.0,21.0,25.0,17.0,58.0,58.0,58.0,67.0,58.0,38.0,46.0,33.0,25.0,25.0,12.0,12.0,17.0,,0.0,PJL,Punjab,"Punjabi in Lahore, Pakistan [PJL]",Punjabi,SAS,,pakistan.png
-50.0,42.0,54.0,54.0,54.0,54.0,50.0,38.0,38.0,38.0,38.0,62.0,58.0,62.0,67.0,58.0,54.0,67.0,54.0,46.0,46.0,4.0,12.0,0.0,17.0,,STU,Sri Lanka,Sri Lankan Tamil in the UK,Tamil,SAS,,sri_lanka.png
+,,,,,,,,,,,,,,,,,,,,,,,,,,ACB,Barbados,African Caribbean in Barbados,Afro-Caribbean,AFR,,barbados.png
+8.0,,,,,,,,,,,,,,,,,,,,,,,,,,ASW,Africa,African Ancestry in SW USA,African American,AFR,,pan_africa_flag.png
+4.0,17.0,,,,,,,,,,,,,,,,,,,,,,,,,ESN,Nigeria,Esan in Nigeria,Esan,AFR,,nigeria.png
+8.0,17.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,GWD,Gambia,Gambian in Western Division – Mandinka,Mandinka,AFR,AFR,gambia.png
+8.0,17.0,8.0,12.0,,,,,,,,,,,,,,,,,,,,,,,LWK,Kenya,"Luhya in Webuye, Kenya",Luhya,AFR,,kenya.png
+8.0,17.0,8.0,8.0,12.0,,,,,,,,,,,,,,,,,,,,,,MSL,Sierra Leone,Mende in Sierra Leone,Mende,AFR,,sierra_leone.png
+8.0,17.0,8.0,12.0,12.0,8.0,,,,,,,,,,,,,,,,,,,,,YRI,Nigeria,"Yoruba in Ibadan, Nigeria",Yoruba,AFR,,nigeria.png
+54.0,46.0,62.0,58.0,62.0,62.0,62.0,,,,,,,,,,,,,,,,,,,,CLM,Colombia,"Colombian in Medellín, Colombia",Colombian,AMR,,colombia.png
+54.0,46.0,58.0,58.0,58.0,62.0,62.0,12.0,,,,,,,,,,,,,,,,,,,MXL,Mexico,"Mexican Ancestry in L.A. CA, USA",Mexican-American,AMR,AMR,mexico.png
+54.0,50.0,62.0,58.0,62.0,62.0,62.0,21.0,8.0,,,,,,,,,,,,,,,,,,PEL,Peru,Peruvian in Lima Peru,Peruvian,AMR,,peru.png
+50.0,42.0,58.0,54.0,58.0,58.0,58.0,4.0,17.0,25.0,,,,,,,,,,,,,,,,,PUR,Puerto Rico,Puerto Rican in Puerto Rico,Puerto Rican,AMR,,puerto_rico.png
+67.0,67.0,75.0,71.0,71.0,75.0,75.0,58.0,46.0,50.0,62.0,,,,,,,,,,,,,,,,CDX,SE-Asia,"Chinese Dai in Xishuangbanna, China",Dai,EAS,,china.png
+71.0,67.0,75.0,71.0,71.0,75.0,75.0,62.0,46.0,50.0,62.0,8.0,,,,,,,,,,,,,,,CHB,China-NE,"Han Chinese in Beijing, China",Han,EAS,EAS,china.png
+67.0,67.0,75.0,71.0,71.0,75.0,75.0,58.0,42.0,46.0,62.0,4.0,,,,,,,,,,,,,,,CHS,China-SE,"Han Chinese - Southern, China",Han,EAS,EAS,china.png
+75.0,75.0,79.0,75.0,75.0,79.0,79.0,67.0,50.0,54.0,71.0,12.0,8.0,8.0,,,,,,,,,,,,,JPT,Japan,"Japanese in Tokyo, Japan",Japanese,EAS,,japan.png
+67.0,67.0,71.0,71.0,67.0,71.0,75.0,58.0,42.0,46.0,58.0,,4.0,,12.0,,,,,,,,,,,,KHV,Vietnam,"Kinh in Ho Chi Minh City, Vietnam",Kinh,EAS,,vietnam.png
+67.0,58.0,75.0,71.0,75.0,79.0,79.0,21.0,33.0,38.0,17.0,79.0,79.0,79.0,88.0,75.0,,,,,,,,,,,CEU,Western Europe,Utah Residents (CEPH) with Northern and Western European ancestry,European American,EUR,,USA.png
+75.0,62.0,79.0,75.0,79.0,83.0,83.0,29.0,46.0,46.0,29.0,83.0,88.0,83.0,92.0,83.0,8.0,,,,,,,,,,FIN,Finland,Finnish in Finland,Finnish,EUR,,finland.png
+67.0,58.0,75.0,71.0,75.0,75.0,75.0,17.0,33.0,38.0,17.0,79.0,79.0,79.0,88.0,79.0,,8.0,,,,,,,,,GBR,England/Scotland,British from England and Scotland,British / Scottish,EUR,EUR,UK.png
+58.0,50.0,67.0,67.0,67.0,71.0,71.0,8.0,25.0,29.0,4.0,67.0,67.0,67.0,75.0,62.0,8.0,25.0,12.0,,,,,,,,IBS,Spain,Iberian Populations in Spain,Spainish-Iberian,EUR,,spain.png
+62.0,50.0,67.0,67.0,67.0,71.0,71.0,12.0,25.0,33.0,8.0,71.0,71.0,71.0,79.0,67.0,8.0,21.0,12.0,,,,,,,,TSI,Italy,Toscani in Italia,Toscan-Italy,EUR,,italy.png
+46.0,38.0,54.0,50.0,54.0,54.0,50.0,29.0,29.0,33.0,29.0,58.0,58.0,58.0,62.0,54.0,46.0,58.0,46.0,33.0,38.0,,,,,,BEB,Bangladesh,Bengali in Bangladesh,Bengali,SAS,,bangladesh.png
+50.0,42.0,54.0,54.0,54.0,54.0,54.0,29.0,29.0,33.0,29.0,54.0,54.0,54.0,62.0,54.0,46.0,58.0,46.0,33.0,33.0,8.0,,,,,GIH,Gujarat,"Gujarati Indians in Houston, Texas, USA",Gujarati,SAS,,india.png
+46.0,42.0,54.0,50.0,54.0,54.0,50.0,38.0,33.0,38.0,33.0,62.0,62.0,62.0,67.0,62.0,54.0,62.0,54.0,42.0,42.0,4.0,8.0,,,,ITU,Andhra Pradesh/Telangana,Indian Telugu in the U.K.,Telugu,SAS,SAS,india.png
+50.0,42.0,54.0,54.0,54.0,54.0,54.0,17.0,21.0,25.0,17.0,58.0,58.0,58.0,67.0,58.0,38.0,46.0,33.0,25.0,25.0,12.0,12.0,17.0,,,PJL,Punjab,"Punjabi in Lahore, Pakistan [PJL]",Punjabi,SAS,,pakistan.png
+50.0,42.0,54.0,54.0,54.0,54.0,50.0,38.0,38.0,38.0,38.0,62.0,58.0,62.0,67.0,58.0,54.0,67.0,54.0,46.0,46.0,4.0,12.0,,17.0,,STU,Sri Lanka,Sri Lankan Tamil in the UK,Tamil,SAS,,sri_lanka.png

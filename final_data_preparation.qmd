@@ -292,7 +292,7 @@ dist_mat_only2 = pd.DataFrame.from_records(dist_mat_tri0)
 
 Set values to None
 ```{python}
-dist_mat_only2[dist_mat_only2< 0] = None
+dist_mat_only2[dist_mat_only2< 0.001] = None
 ```
 
 
@@ -304,6 +304,11 @@ dist_mat_only2.columns = cols_dist_mat_only
 Looks like numpy un-rounded us
 ```{python}
 dist_mat_only2 = dist_mat_only2.round()
+```
+
+
+```{python}
+dist_mat_only2.head()
 ```
 
 ## Add meta-data
