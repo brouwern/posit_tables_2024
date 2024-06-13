@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.45">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Nathan Brouwer (brouwern@gmail.com)">
+
+<title>Final Data Preparation – 1000genomes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">1000genomes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./final_data_preparation.html" aria-current="page"> 
+<span class="menu-text">Final Data Preparation</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Final Data Preparation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Nathan Brouwer (brouwern@gmail.com) </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
+<p>Load reticulate so I can work in Python while in RStudio:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#py_install("pandas")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#py_install("polars")</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#py_install("seaborn")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Load the Python packages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import polars as pl</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT, md, html, style, loc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Load the distance matrix. The _pd suffix is a reminder that I’m working in Pandas. Eventually I hope to port as much of these final tasks to Polars.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dist_mat_pd <span class="op">=</span> pd.read_csv(<span class="st">"distance_matrix.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="finalizing-dataframe" class="level2">
+<h2 class="anchored" data-anchor-id="finalizing-dataframe">Finalizing dataframe</h2>
+<section id="additional-meta-data" class="level3">
+<h3 class="anchored" data-anchor-id="additional-meta-data">Additional meta-data</h3>
+<p>The dataframe produced from the previous script is a square matrix with two columns of meta-data appended on the far left. (sup_pop = super population, pop = population)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dist_mat_pd.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  sup_pop  pop       ACB       ASW  ...        GIH        ITU        PJL        STU
+0     AFR  ACB  0.000006  4.319538  ...  13.771366  13.447868  13.840908  13.605249
+1     AFR  ASW  4.319538  0.000000  ...  11.767316  11.552621  11.581944  11.916708
+2     AFR  ESN  3.248675  5.605990  ...  15.177879  14.626126  15.380010  14.665675
+3     AFR  GWD  3.705924  5.986606  ...  14.915595  14.495067  14.798274  14.546724
+4     AFR  LWK  3.790766  5.945784  ...  14.968611  14.537910  15.213237  14.698901
+
+[5 rows x 28 columns]</code></pre>
+</div>
+</div>
+<p>The super populations are already in the table, but here they are in a list for reference:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sup_pop_orig <span class="op">=</span> [<span class="st">"AFR"</span>,<span class="st">"AFR"</span>,<span class="st">"AFR"</span>,<span class="st">"AFR"</span>,<span class="st">"AFR"</span>,<span class="st">"AFR"</span>,<span class="st">"AFR"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">"AMR"</span>,<span class="st">"AMR"</span>,<span class="st">"AMR"</span>,<span class="st">"AMR"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"EAS"</span>,<span class="st">"EAS"</span>,<span class="st">"EAS"</span>,<span class="st">"EAS"</span>,<span class="st">"EAS"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">"EUR"</span>,<span class="st">"EUR"</span>,<span class="st">"EUR"</span>,<span class="st">"EUR"</span>,<span class="st">"EUR"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">"SAS"</span>,<span class="st">"SAS"</span>,<span class="st">"SAS"</span>,<span class="st">"SAS"</span>,<span class="st">"SAS"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I’ll create a column labeling super populations in the margin. This is a workaround b/c I’m having issues with row stubs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sup_pop_alt <span class="op">=</span> [<span class="st">""</span>,<span class="st">""</span>,<span class="st">""</span>,<span class="st">"AFR"</span>,<span class="st">""</span>,<span class="st">""</span>,<span class="st">""</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">""</span>,<span class="st">"AMR"</span>,<span class="st">""</span>,<span class="st">""</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">""</span>,<span class="st">"EAS"</span>,<span class="st">"EAS"</span>,<span class="st">""</span>,<span class="st">""</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>               <span class="st">""</span>,<span class="st">""</span>,<span class="st">"EUR"</span>,<span class="st">""</span>,<span class="st">""</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>               <span class="st">""</span>,<span class="st">""</span>,<span class="st">"SAS"</span>,<span class="st">""</span>,<span class="st">""</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Expanded background information about each population is shown below. I’ll edit this by hand to make further columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># full population details - for notes columns</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pop_details <span class="op">=</span> [<span class="st">'African Caribbean in Barbados'</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> <span class="st">'African Ancestry in SW USA'</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> <span class="st">'Esan in Nigeria'</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gambian in Western Division – Mandinka'</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a> <span class="st">'Luhya in Webuye, Kenya'</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mende in Sierra Leone'</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a> <span class="st">'Yoruba in Ibadan, Nigeria'</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a> <span class="st">'Colombian in Medellín, Colombia'</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mexican Ancestry in L.A. CA, USA'</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a> <span class="st">'Peruvian in Lima Peru'</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a> <span class="st">'Puerto Rican in Puerto Rico'</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a> <span class="st">'Chinese Dai in Xishuangbanna, China'</span>, <span class="co">#Chin</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han Chinese in Beijing, China'</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han Chinese - Southern, China'</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a> <span class="st">'Japanese in Tokyo, Japan'</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a> <span class="st">'Kinh in Ho Chi Minh City, Vietnam'</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a> <span class="st">'Utah Residents (CEPH) with Northern and Western European ancestry'</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a> <span class="st">'Finnish in Finland'</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a> <span class="st">'British from England and Scotland'</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a> <span class="st">'Iberian Populations in Spain'</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a> <span class="st">'Toscani in Italia'</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a> <span class="st">'Bengali in Bangladesh'</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gujarati Indians in Houston, Texas, USA'</span>,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a> <span class="st">'Indian Telugu in the U.K.'</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a> <span class="st">'Punjabi in Lahore, Pakistan [PJL]'</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a> <span class="st">'Sri Lankan Tamil in the UK'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Based on the information from the full population details, I assigned approximate ethnic, cultural, or similar groups that share demographic or cultural connections. These are approximate (I’m not a social scientist) and based only on information provided by the 1000 Genomes project. Feel free to contact me at brouwern at gmail.com with any suggested updates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ethnic_group <span class="op">=</span> [</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="st">'Afro-Caribbean'</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> <span class="st">'African American'</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> <span class="st">'Esan'</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mandinka'</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a> <span class="st">'Luhya'</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mende'</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> <span class="st">'Yoruba'</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> <span class="st">'Colombian'</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mexican-American'</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a> <span class="st">'Peruvian'</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a> <span class="st">'Puerto Rican'</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a> <span class="st">'Dai'</span>, <span class="co"># China</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han'</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han'</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a> <span class="st">'Japanese'</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a> <span class="st">'Kinh'</span>, <span class="co"># in Ho Chi Minh City, Vietnam</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a> <span class="st">'European American'</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a> <span class="st">'Finnish'</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a> <span class="st">'British / Scottish'</span>,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a> <span class="st">'Spainish-Iberian'</span>,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a> <span class="st">'Toscan-Italy'</span>,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a> <span class="st">'Bengali'</span>,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gujarati'</span>, <span class="co"># Indians in Houston, Texas, USA</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a> <span class="st">'Telugu'</span>, <span class="co"># in the U.K.</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a> <span class="st">'Punjabi'</span>, <span class="co"># in Lahore, Pakistan [PJL]</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a> <span class="st">'Tamil'</span>] <span class="co">#Sri Lankan Tamil in the UK</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This next list contains the country the samples were collected in, their historical geographic origins, or where the group has the largest populations. In several cases data were collected “in diaspora” and the geographic location assigned to the origin as reported by the 1000 Genomes Project. Therefore, Indians living in the UK were assigned to India. For African-American and European-Americans, “Africa” and “Europe” were used.</p>
+<p>Note that the Dai were sampled from China. Wikipedia states “The Dai people form one of the 56 ethnic groups officially recognized by the People’s Republic of China. By extension, the term can apply to groups in Laos, Vietnam, Thailand and Myanmar when Dai is used to mean specifically Tai Yai, Lue, Chinese Shan, Tai Dam, Tai Khao or even Tai in general.” I therefore coded them as “SE-Asia”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>geographic_sample <span class="op">=</span> [</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="st">'Barbados'</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="st">'Africa'</span>, <span class="co"># sampled in USA</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="st">'Nigeria'</span>, <span class="co">#Nigeria - 1</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gambia'</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="st">'Kenya'</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> <span class="st">'Sierra Leone'</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a> <span class="st">'Nigeria'</span>, <span class="co">#Nigeria - 2</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a> <span class="st">'Colombia'</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mexico'</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a> <span class="st">'Peru'</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a> <span class="st">'Puerto Rico'</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a> <span class="st">'SE-Asia'</span>,<span class="co"># Chinese Dai in Xishuangbanna</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'China-NE'</span>,<span class="co"># Han Chinese - 1; Beijing</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'China-SE'</span>,<span class="co"># Han Chinese - 2; Southern China</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a> <span class="st">'Japan'</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a> <span class="st">'Vietnam'</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a> <span class="st">'Western Europe'</span>, <span class="co">#European Union</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a> <span class="st">'Finland'</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a> <span class="st">'England/Scotland'</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a> <span class="st">'Spain'</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a> <span class="st">'Italy'</span>,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a> <span class="st">'Bangladesh'</span>,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gujarat'</span>,<span class="co">#India Gujarat, sampled in UK</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a> <span class="st">'Andhra Pradesh/Telangana'</span>,<span class="co">#India Telugu, sampled in UK</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a> <span class="st">'Punjab'</span>,<span class="co"># Punjab, Pakistan</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a> <span class="st">'Sri Lanka'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, this list contains the country where a sample was actually obtained from.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># country where sample was taken</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>country_sample <span class="op">=</span> [</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> <span class="st">'Barbados'</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> <span class="st">'USA'</span>, <span class="co"># African American</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a> <span class="st">'Nigeria'</span>, <span class="co">#Nigeria - 1</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gambia'</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> <span class="st">'Kenya'</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a> <span class="st">'Sierra Leone'</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a> <span class="st">'Nigeria'</span>, <span class="co">#Nigeria - 2</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a> <span class="st">'Colombia'</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a> <span class="st">'Mexico'</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a> <span class="st">'Peru'</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a> <span class="st">'Puerto Rico'</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'China'</span>,<span class="co"># Chinese Dai in Xishuangbanna</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'China'</span>,<span class="co"># Han Chinese - 1; Beijing</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a> <span class="st">'China'</span>,<span class="co"># Han Chinese - 2; Southern China</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a> <span class="st">'Japan'</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a> <span class="st">'Vietnam'</span>,</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a> <span class="st">'USA'</span>, <span class="co">#European Union</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a> <span class="st">'Finland'</span>,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a> <span class="st">'UK'</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a> <span class="st">'Spain'</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a> <span class="st">'Italy'</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a> <span class="st">'Bangladesh'</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a> <span class="st">'UK'</span>,<span class="co">#India Gujarat, sampled in UK</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a> <span class="st">'UK'</span>,<span class="co">#India Telugu, sampled in UK</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a> <span class="st">'Pakistan'</span>,<span class="co"># Punjab</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a> <span class="st">'UK'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Names of flag files for use as icons.</p>
+<p>For African Americans, the Pan-Africa frag is used, though there is likely a better choice.</p>
+<p>Unresolved:</p>
+<ul>
+<li>For European Americans the European Union flag could be used used.</li>
+<li>Chinese Dai?</li>
+<li>Gujarat - Use state flag?</li>
+<li>Telgu - use state flag?</li>
+</ul>
+<p>The Chin</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for inserting flags</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>icon <span class="op">=</span> [<span class="st">'barbados.png'</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> <span class="st">'pan_africa_flag.png'</span>, <span class="co"># African Union? Pan-Africa</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> <span class="st">'nigeria.png'</span>, <span class="co">#Nigeria</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a> <span class="st">'gambia.png'</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a> <span class="st">'kenya.png'</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a> <span class="st">'sierra_leone.png'</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a> <span class="st">'nigeria.png'</span>, <span class="co">#Nigeria</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a> <span class="st">'colombia.png'</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a> <span class="st">'mexico.png'</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a> <span class="st">'peru.png'</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a> <span class="st">'puerto_rico.png'</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a> <span class="st">'china.png'</span>,<span class="co"># Chinese Dai in Xishuangbanna</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'china.png'</span>,<span class="co"># Han Chinese in Beijing</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'china.png'</span>,<span class="co"># Han Chinese - Southern, China</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a> <span class="st">'japan.png'</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a> <span class="st">'vietnam.png'</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a> <span class="st">'USA.png'</span>, <span class="co">#European Union</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a> <span class="st">'finland.png'</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a> <span class="st">'UK.png'</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a> <span class="st">'spain.png'</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a> <span class="st">'italy.png'</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a> <span class="st">'bangladesh.png'</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a> <span class="st">'india.png'</span>,<span class="co">#india Gujarat</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a> <span class="st">'india.png'</span>,<span class="co">#India Telugu</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a> <span class="st">'pakistan.png'</span>,<span class="co">#India  Punjab</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a> <span class="st">'sri_lanka.png'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="finalizing-distance-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="finalizing-distance-matrix">Finalizing distance matrix</h2>
+<p>Stored and Remove the meta-data columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make copy</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sup_pop_and_pop <span class="op">=</span> dist_mat_pd[[<span class="st">"sup_pop"</span>,<span class="st">"pop"</span>]]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove metadata</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>dist_mat_only <span class="op">=</span> dist_mat_pd.drop([<span class="st">"sup_pop"</span>,<span class="st">"pop"</span>], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save new column names</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>cols_dist_mat_only <span class="op">=</span> dist_mat_only.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Round everything off</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only <span class="op">=</span> dist_mat_only.<span class="bu">round</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Set the columns to None. In case numbers are shown on the final table, I want the diagonal to be blank, which can be done in great_tables. This could also be done with numpy.diagonal, but in this case I knew that the diagonal elements are all 0 (or very very close).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only[dist_mat_only<span class="op">&lt;</span> <span class="fl">0.01</span>] <span class="op">=</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="scaling" class="level3">
+<h3 class="anchored" data-anchor-id="scaling">Scaling:</h3>
+<p>In order to increase the contrast based on color all elements are min-max scaled and set to a range of 0 to 100</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find min/max for scaling</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>global_min <span class="op">=</span> dist_mat_only.<span class="bu">min</span>().<span class="bu">min</span>()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>global_max <span class="op">=</span> dist_mat_only.<span class="bu">max</span>().<span class="bu">max</span>()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>dist_mat_only <span class="op">=</span> (dist_mat_only<span class="op">-</span>global_min)<span class="op">/</span>global_max<span class="op">*</span><span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="work-with-upper-triangle" class="level3">
+<h3 class="anchored" data-anchor-id="work-with-upper-triangle">Work with upper triangle</h3>
+<p>Set off diagonal to 0</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dist_mat_tri0 <span class="op">=</span> np.tril(dist_mat_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2 <span class="op">=</span> pd.DataFrame.from_records(dist_mat_tri0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Add the columns back</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.columns <span class="op">=</span> cols_dist_mat_only</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Looks like numpy un-rounded us</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2 <span class="op">=</span> dist_mat_only2.<span class="bu">round</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="add-meta-data" class="level2">
+<h2 class="anchored" data-anchor-id="add-meta-data">Add meta-data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"oneKG_pop"</span>] <span class="op">=</span> cols_dist_mat_only</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"country/Location"</span>] <span class="op">=</span> geographic_sample <span class="co">#</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"pop_details"</span>] <span class="op">=</span> pop_details</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"ethnic_cultural_group"</span>] <span class="op">=</span> ethnic_group</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"sup_pop"</span>] <span class="op">=</span> sup_pop_orig</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"sup_pop_alt"</span>] <span class="op">=</span> sup_pop_alt</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"icon"</span>] <span class="op">=</span> icon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="inserting-empty-rows" class="level2">
+<h2 class="anchored" data-anchor-id="inserting-empty-rows">Inserting empty rows</h2>
+<p>I experimented with this but did not use in the final table</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>filler_row <span class="op">=</span> pd.DataFrame(np.repeat(<span class="va">None</span>,dist_mat_only2shape[<span class="dv">1</span>])).T</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>filler_row.columns <span class="op">=</span> dist_mat_pd.columns</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>dist_mat_only3 <span class="op">=</span> pd.concat([dist_mat_only2.iloc[:<span class="dv">7</span>], </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">7</span>:<span class="dv">11</span>],</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">11</span>:<span class="dv">15</span>],</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">16</span>:<span class="dv">20</span>],</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">21</span>:]</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>              ]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="great_tables-groupings-etc." class="level2">
+<h2 class="anchored" data-anchor-id="great_tables-groupings-etc.">great_tables groupings etc.</h2>
+<p>The series below define key groups of rows / columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># columns that will be numeric in table</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [<span class="st">'ACB'</span>,<span class="st">'ASW'</span>, <span class="st">'ESN'</span>, <span class="st">'GWD'</span>, <span class="st">'LWK'</span>, <span class="st">'MSL'</span>, <span class="st">'YRI'</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CLM'</span>, <span class="st">'MXL'</span>, <span class="st">'PEL'</span>, <span class="st">'PUR'</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CDX'</span>, <span class="st">'CHB'</span>, <span class="st">'CHS'</span>, <span class="st">'JPT'</span>, <span class="st">'KHV'</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CEU'</span>,<span class="st">'FIN'</span>,<span class="st">'GBR'</span>,<span class="st">'IBS'</span>,<span class="st">'TSI'</span>, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">'BEB'</span>, <span class="st">'GIH'</span>, <span class="st">'ITU'</span>, <span class="st">'PJL'</span>, <span class="st">'STU'</span>]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># super population groups</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">## for creating spanners in table</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>africa_AFR    <span class="op">=</span> [<span class="st">'ACB'</span>,<span class="st">'ASW'</span>,<span class="st">'ESN'</span>,<span class="st">'GWD'</span>,<span class="st">'LWK'</span>,<span class="st">'MSL'</span>,<span class="st">'YRI'</span>]</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>americas_AMR  <span class="op">=</span> [<span class="st">'CLM'</span>,<span class="st">'MXL'</span>,<span class="st">'PEL'</span>,<span class="st">'PUR'</span>]</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>east_asia_EAS <span class="op">=</span> [<span class="st">'CDX'</span>,<span class="st">'CHB'</span>,<span class="st">'CHS'</span>,<span class="st">'JPT'</span>,<span class="st">'KHV'</span>]</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>europe_EUR    <span class="op">=</span> [<span class="st">'CEU'</span>,<span class="st">'FIN'</span>,<span class="st">'GBR'</span>,<span class="st">'IBS'</span>,<span class="st">'TSI'</span>]</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>southasia_SAS <span class="op">=</span> [<span class="st">'BEB'</span>,<span class="st">'GIH'</span>,<span class="st">'ITU'</span>,<span class="st">'PJL'</span>,<span class="st">'STU'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Preview the table with bare call to GT()</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>GT(dist_mat_only2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="uwssgutvyk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#uwssgutvyk table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#uwssgutvyk thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#uwssgutvyk p { margin: 0; padding: 0; }
+ #uwssgutvyk .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #uwssgutvyk .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #uwssgutvyk .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #uwssgutvyk .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #uwssgutvyk .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #uwssgutvyk .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #uwssgutvyk .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #uwssgutvyk .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #uwssgutvyk .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #uwssgutvyk .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #uwssgutvyk .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #uwssgutvyk .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #uwssgutvyk .gt_spanner_row { border-bottom-style: hidden; }
+ #uwssgutvyk .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #uwssgutvyk .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #uwssgutvyk .gt_from_md> :first-child { margin-top: 0; }
+ #uwssgutvyk .gt_from_md> :last-child { margin-bottom: 0; }
+ #uwssgutvyk .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #uwssgutvyk .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #uwssgutvyk .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #uwssgutvyk .gt_row_group_first td { border-top-width: 2px; }
+ #uwssgutvyk .gt_row_group_first th { border-top-width: 2px; }
+ #uwssgutvyk .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #uwssgutvyk .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #uwssgutvyk .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #uwssgutvyk .gt_left { text-align: left; }
+ #uwssgutvyk .gt_center { text-align: center; }
+ #uwssgutvyk .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #uwssgutvyk .gt_font_normal { font-weight: normal; }
+ #uwssgutvyk .gt_font_bold { font-weight: bold; }
+ #uwssgutvyk .gt_font_italic { font-style: italic; }
+ #uwssgutvyk .gt_super { font-size: 65%; }
+ #uwssgutvyk .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #uwssgutvyk .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<tbody>
+<tr class="odd gt_col_headings">
+<td id="ACB" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ACB</td>
+<td id="ASW" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ASW</td>
+<td id="ESN" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ESN</td>
+<td id="GWD" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">GWD</td>
+<td id="LWK" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">LWK</td>
+<td id="MSL" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">MSL</td>
+<td id="YRI" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">YRI</td>
+<td id="CLM" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">CLM</td>
+<td id="MXL" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">MXL</td>
+<td id="PEL" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">PEL</td>
+<td id="PUR" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">PUR</td>
+<td id="CDX" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">CDX</td>
+<td id="CHB" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">CHB</td>
+<td id="CHS" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">CHS</td>
+<td id="JPT" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">JPT</td>
+<td id="KHV" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">KHV</td>
+<td id="CEU" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">CEU</td>
+<td id="FIN" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">FIN</td>
+<td id="GBR" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">GBR</td>
+<td id="IBS" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">IBS</td>
+<td id="TSI" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">TSI</td>
+<td id="BEB" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">BEB</td>
+<td id="GIH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">GIH</td>
+<td id="ITU" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ITU</td>
+<td id="PJL" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">PJL</td>
+<td id="STU" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">STU</td>
+<td id="oneKG_pop" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">oneKG_pop</td>
+<td id="country/Location" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">country/Location</td>
+<td id="pop_details" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">pop_details</td>
+<td id="ethnic_cultural_group" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">ethnic_cultural_group</td>
+<td id="sup_pop" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">sup_pop</td>
+<td id="sup_pop_alt" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">sup_pop_alt</td>
+<td id="icon" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">icon</td>
+</tr>
+</tbody>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">ACB</td>
+<td class="gt_row gt_left">Barbados</td>
+<td class="gt_row gt_left">African Caribbean in Barbados</td>
+<td class="gt_row gt_left">Afro-Caribbean</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">barbados.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">ASW</td>
+<td class="gt_row gt_left">Africa</td>
+<td class="gt_row gt_left">African Ancestry in SW USA</td>
+<td class="gt_row gt_left">African American</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">pan_africa_flag.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">ESN</td>
+<td class="gt_row gt_left">Nigeria</td>
+<td class="gt_row gt_left">Esan in Nigeria</td>
+<td class="gt_row gt_left">Esan</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">nigeria.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">GWD</td>
+<td class="gt_row gt_left">Gambia</td>
+<td class="gt_row gt_left">Gambian in Western Division – Mandinka</td>
+<td class="gt_row gt_left">Mandinka</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left">gambia.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">LWK</td>
+<td class="gt_row gt_left">Kenya</td>
+<td class="gt_row gt_left">Luhya in Webuye, Kenya</td>
+<td class="gt_row gt_left">Luhya</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">kenya.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">MSL</td>
+<td class="gt_row gt_left">Sierra Leone</td>
+<td class="gt_row gt_left">Mende in Sierra Leone</td>
+<td class="gt_row gt_left">Mende</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">sierra_leone.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">YRI</td>
+<td class="gt_row gt_left">Nigeria</td>
+<td class="gt_row gt_left">Yoruba in Ibadan, Nigeria</td>
+<td class="gt_row gt_left">Yoruba</td>
+<td class="gt_row gt_left">AFR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">nigeria.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">CLM</td>
+<td class="gt_row gt_left">Colombia</td>
+<td class="gt_row gt_left">Colombian in Medellín, Colombia</td>
+<td class="gt_row gt_left">Colombian</td>
+<td class="gt_row gt_left">AMR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">colombia.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">MXL</td>
+<td class="gt_row gt_left">Mexico</td>
+<td class="gt_row gt_left">Mexican Ancestry in L.A. CA, USA</td>
+<td class="gt_row gt_left">Mexican-American</td>
+<td class="gt_row gt_left">AMR</td>
+<td class="gt_row gt_left">AMR</td>
+<td class="gt_row gt_left">mexico.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">21.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">PEL</td>
+<td class="gt_row gt_left">Peru</td>
+<td class="gt_row gt_left">Peruvian in Lima Peru</td>
+<td class="gt_row gt_left">Peruvian</td>
+<td class="gt_row gt_left">AMR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">peru.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">PUR</td>
+<td class="gt_row gt_left">Puerto Rico</td>
+<td class="gt_row gt_left">Puerto Rican in Puerto Rico</td>
+<td class="gt_row gt_left">Puerto Rican</td>
+<td class="gt_row gt_left">AMR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">puerto_rico.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">CDX</td>
+<td class="gt_row gt_left">SE-Asia</td>
+<td class="gt_row gt_left">Chinese Dai in Xishuangbanna, China</td>
+<td class="gt_row gt_left">Dai</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">china.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">CHB</td>
+<td class="gt_row gt_left">China-NE</td>
+<td class="gt_row gt_left">Han Chinese in Beijing, China</td>
+<td class="gt_row gt_left">Han</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left">china.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">CHS</td>
+<td class="gt_row gt_left">China-SE</td>
+<td class="gt_row gt_left">Han Chinese - Southern, China</td>
+<td class="gt_row gt_left">Han</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left">china.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">JPT</td>
+<td class="gt_row gt_left">Japan</td>
+<td class="gt_row gt_left">Japanese in Tokyo, Japan</td>
+<td class="gt_row gt_left">Japanese</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">japan.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">KHV</td>
+<td class="gt_row gt_left">Vietnam</td>
+<td class="gt_row gt_left">Kinh in Ho Chi Minh City, Vietnam</td>
+<td class="gt_row gt_left">Kinh</td>
+<td class="gt_row gt_left">EAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">vietnam.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">21.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">88.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">CEU</td>
+<td class="gt_row gt_left">Western Europe</td>
+<td class="gt_row gt_left">Utah Residents (CEPH) with Northern and Western European ancestry</td>
+<td class="gt_row gt_left">European American</td>
+<td class="gt_row gt_left">EUR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">USA.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">88.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">92.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">FIN</td>
+<td class="gt_row gt_left">Finland</td>
+<td class="gt_row gt_left">Finnish in Finland</td>
+<td class="gt_row gt_left">Finnish</td>
+<td class="gt_row gt_left">EUR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">finland.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">88.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">GBR</td>
+<td class="gt_row gt_left">England/Scotland</td>
+<td class="gt_row gt_left">British from England and Scotland</td>
+<td class="gt_row gt_left">British / Scottish</td>
+<td class="gt_row gt_left">EUR</td>
+<td class="gt_row gt_left">EUR</td>
+<td class="gt_row gt_left">UK.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">IBS</td>
+<td class="gt_row gt_left">Spain</td>
+<td class="gt_row gt_left">Iberian Populations in Spain</td>
+<td class="gt_row gt_left">Spainish-Iberian</td>
+<td class="gt_row gt_left">EUR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">spain.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">21.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">TSI</td>
+<td class="gt_row gt_left">Italy</td>
+<td class="gt_row gt_left">Toscani in Italia</td>
+<td class="gt_row gt_left">Toscan-Italy</td>
+<td class="gt_row gt_left">EUR</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">italy.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">BEB</td>
+<td class="gt_row gt_left">Bangladesh</td>
+<td class="gt_row gt_left">Bengali in Bangladesh</td>
+<td class="gt_row gt_left">Bengali</td>
+<td class="gt_row gt_left">SAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">bangladesh.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">29.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">GIH</td>
+<td class="gt_row gt_left">Gujarat</td>
+<td class="gt_row gt_left">Gujarati Indians in Houston, Texas, USA</td>
+<td class="gt_row gt_left">Gujarati</td>
+<td class="gt_row gt_left">SAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">india.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">ITU</td>
+<td class="gt_row gt_left">Andhra Pradesh/Telangana</td>
+<td class="gt_row gt_left">Indian Telugu in the U.K.</td>
+<td class="gt_row gt_left">Telugu</td>
+<td class="gt_row gt_left">SAS</td>
+<td class="gt_row gt_left">SAS</td>
+<td class="gt_row gt_left">india.png</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">21.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_left">PJL</td>
+<td class="gt_row gt_left">Punjab</td>
+<td class="gt_row gt_left">Punjabi in Lahore, Pakistan [PJL]</td>
+<td class="gt_row gt_left">Punjabi</td>
+<td class="gt_row gt_left">SAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">pakistan.png</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">50.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">0.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_left">STU</td>
+<td class="gt_row gt_left">Sri Lanka</td>
+<td class="gt_row gt_left">Sri Lankan Tamil in the UK</td>
+<td class="gt_row gt_left">Tamil</td>
+<td class="gt_row gt_left">SAS</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">sri_lanka.png</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+        
+</div>
+</div>
+<p>Hidden columns:</p>
+<ul>
+<li>‘country/Location’</li>
+<li>‘pop_details’</li>
+<li>‘sup_pop’ (from sup_pop_orig)</li>
+<li>‘sup_pop_alt’</li>
+</ul>
+<p>Used:</p>
+<ul>
+<li>‘icon’</li>
+<li>‘oneKG_pop’</li>
+<li>‘ethnic_cultural_group’</li>
+</ul>
+<p>Preview the table with all major elements (not rendered)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT, md, html, style, loc</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make my table</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    GT(dist_mat_only2).tab_style(</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        style<span class="op">=</span>style.text(size <span class="op">=</span> <span class="st">"0"</span>),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        locations<span class="op">=</span>loc.body(columns<span class="op">=</span>num_cols)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    .tab_header(title<span class="op">=</span><span class="st">"Genetic distance between 1000 Genomes populations"</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>     subtitle<span class="op">=</span><span class="st">"Subtitle goes here"</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    .cols_hide(columns<span class="op">=</span>[</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"country/Location"</span>, <span class="co"># previously "country"</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pop_details"</span>,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sup_pop"</span>,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sup_pop_alt"</span>])</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    .fmt_image(<span class="st">"icon"</span>, path<span class="op">=</span><span class="st">"icons/"</span>)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.tab_stub(</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  rowname_col="row", </span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  groupname_col="sup_pop"</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Group"</span>,</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>                <span class="co">#"sup_pop", </span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"oneKG_pop"</span>,</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"icon"</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>                ]</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Africa"</span>,</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>africa_AFR</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Americas"</span>,</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>americas_AMR</span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"East Asia"</span>,</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>east_asia_EAS</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Western Europe"</span>,</span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>europe_EUR</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"South Asia"</span>,</span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>southasia_SAS</span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Genetic Distances"</span>,</span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>num_cols</span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Notes"</span>,</span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[</span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"ethnic_cultural_group"</span><span class="co">#,</span></span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#"country_sampling"</span></span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>                 ]</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a>    .cols_label(</span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a>        <span class="co">#sup_pop = "Super population",</span></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a>        oneKG_pop <span class="op">=</span> <span class="st">"1KG Population Code"</span>,</span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>        <span class="co">#country_sampling = "Sampling location",</span></span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a>        ethnic_cultural_group <span class="op">=</span> <span class="st">"Ethnic / Cultural Group"</span>,</span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a>        icon <span class="op">=</span> <span class="st">"Geographic Origin"</span></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>    .cols_align(align<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>    .fmt_number(columns<span class="op">=</span>num_cols, decimals<span class="op">=</span><span class="dv">0</span>, use_seps<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.sub_zero(zero_text='nil')</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>    .data_color(</span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>        domain<span class="op">=</span>[<span class="dv">90</span>, <span class="dv">0</span>],</span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span>[<span class="st">"white"</span>, <span class="st">"orange"</span>],</span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>        na_color<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>    .tab_source_note(source_note<span class="op">=</span><span class="st">"Add citation"</span>)</span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>    .cols_move_to_start(columns<span class="op">=</span>[<span class="co">#"sup_pop", </span></span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>      <span class="st">"icon"</span>,</span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"pop"</span>])</span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="save-the-final-file" class="level2">
+<h2 class="anchored" data-anchor-id="save-the-final-file">Save the final file</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save final table</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.to_csv(<span class="st">"dist_mat_final.csv"</span>, index<span class="op">=</span> <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

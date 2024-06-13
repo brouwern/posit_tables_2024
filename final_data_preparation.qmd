@@ -1,0 +1,485 @@
+---
+title: "Final Data Preparation"
+author: "Nathan Brouwer (brouwern@gmail.com)"
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Preliminaries
+
+Load reticulate so I can work in Python while in RStudio:
+
+```{r, echo = T, warning = F, message = F}
+library(reticulate)
+#py_install("pandas")
+#py_install("polars")
+#py_install("seaborn")
+```
+
+
+Load the Python packages:
+```{python, echo = T, warning = F, message = F}
+#import polars as pl
+import pandas as pd
+import numpy as np
+from great_tables import GT, md, html, style, loc
+```
+
+Load the distance matrix.  The _pd suffix is a reminder that I'm working in Pandas.  Eventually I hope to port as much of these final tasks to Polars.
+```{python, warning = F, message = F}
+dist_mat_pd = pd.read_csv("distance_matrix.csv")
+```
+
+
+## Finalizing dataframe
+
+
+### Additional meta-data
+
+The dataframe produced from the previous script is a square matrix with two columns of meta-data appended on the far left. (sup_pop = super population, pop = population)
+```{python}
+dist_mat_pd.head()
+```
+
+
+The super populations are already in the table, but here they are in a list for reference:
+```{python}
+sup_pop_orig = ["AFR","AFR","AFR","AFR","AFR","AFR","AFR",
+                "AMR","AMR","AMR","AMR",
+                "EAS","EAS","EAS","EAS","EAS",
+                "EUR","EUR","EUR","EUR","EUR",
+                "SAS","SAS","SAS","SAS","SAS"]
+```
+
+
+I'll create a column labeling super populations in the margin.
+This is a workaround b/c I'm having issues with row stubs.
+```{python}
+sup_pop_alt = ["","","","AFR","","","",
+               "","AMR","","",
+               "","EAS","EAS","","",
+               "","","EUR","","",
+               "","","SAS","",""]
+```
+
+
+Expanded background information about each population is shown below.  I'll edit this by hand to make further columns.
+```{python}
+# full population details - for notes columns
+pop_details = ['African Caribbean in Barbados',
+ 'African Ancestry in SW USA',
+ 'Esan in Nigeria',
+ 'Gambian in Western Division – Mandinka',
+ 'Luhya in Webuye, Kenya',
+ 'Mende in Sierra Leone',
+ 'Yoruba in Ibadan, Nigeria',
+ 'Colombian in Medellín, Colombia',
+ 'Mexican Ancestry in L.A. CA, USA',
+ 'Peruvian in Lima Peru',
+ 'Puerto Rican in Puerto Rico',
+ 'Chinese Dai in Xishuangbanna, China', #Chin
+ 'Han Chinese in Beijing, China',
+ 'Han Chinese - Southern, China',
+ 'Japanese in Tokyo, Japan',
+ 'Kinh in Ho Chi Minh City, Vietnam',
+ 'Utah Residents (CEPH) with Northern and Western European ancestry',
+ 'Finnish in Finland',
+ 'British from England and Scotland',
+ 'Iberian Populations in Spain',
+ 'Toscani in Italia',
+ 'Bengali in Bangladesh',
+ 'Gujarati Indians in Houston, Texas, USA',
+ 'Indian Telugu in the U.K.',
+ 'Punjabi in Lahore, Pakistan [PJL]',
+ 'Sri Lankan Tamil in the UK']
+```
+
+
+Based on the information from the full population details, I assigned approximate ethnic, cultural, or similar groups that share demographic or cultural connections. These are approximate (I'm not a social scientist) and based only on information provided by the 1000 Genomes project.  Feel free to contact me at brouwern at gmail.com with any suggested updates.
+```{python}
+ethnic_group = [
+ 'Afro-Caribbean',
+ 'African American',
+ 'Esan',
+ 'Mandinka',
+ 'Luhya',
+ 'Mende',
+ 'Yoruba',
+ 'Colombian',
+ 'Mexican-American',
+ 'Peruvian',
+ 'Puerto Rican',
+ 'Dai', # China
+ 'Han',
+ 'Han',
+ 'Japanese',
+ 'Kinh', # in Ho Chi Minh City, Vietnam
+ 'European American',
+ 'Finnish',
+ 'British / Scottish',
+ 'Spainish-Iberian',
+ 'Toscan-Italy',
+ 'Bengali',
+ 'Gujarati', # Indians in Houston, Texas, USA
+ 'Telugu', # in the U.K.
+ 'Punjabi', # in Lahore, Pakistan [PJL]
+ 'Tamil'] #Sri Lankan Tamil in the UK
+```
+
+
+This next list contains the country the samples were collected in, their historical geographic origins, or where the group has the largest populations.  In several cases data were collected "in diaspora" and the geographic location assigned to the origin as reported by the 1000 Genomes Project.  Therefore, Indians living in the UK were assigned to India.  For African-American and European-Americans, "Africa" and "Europe" were used.
+
+Note that the Dai were sampled from China.  Wikipedia states "The Dai people form one of the 56 ethnic groups officially recognized by the People's Republic of China. By extension, the term can apply to groups in Laos, Vietnam, Thailand and Myanmar when Dai is used to mean specifically Tai Yai, Lue, Chinese Shan, Tai Dam, Tai Khao or even Tai in general." I therefore coded them as "SE-Asia"
+
+```{python}
+geographic_sample = [
+ 'Barbados',
+ 'Africa', # sampled in USA
+ 'Nigeria', #Nigeria - 1
+ 'Gambia',
+ 'Kenya',
+ 'Sierra Leone',
+ 'Nigeria', #Nigeria - 2
+ 'Colombia',
+ 'Mexico',
+ 'Peru',
+ 'Puerto Rico',
+ 'SE-Asia',# Chinese Dai in Xishuangbanna
+ 'China-NE',# Han Chinese - 1; Beijing
+ 'China-SE',# Han Chinese - 2; Southern China
+ 'Japan',
+ 'Vietnam',
+ 'Western Europe', #European Union
+ 'Finland',
+ 'England/Scotland',
+ 'Spain',
+ 'Italy',
+ 'Bangladesh',
+ 'Gujarat',#India Gujarat, sampled in UK
+ 'Andhra Pradesh/Telangana',#India Telugu, sampled in UK
+ 'Punjab',# Punjab, Pakistan
+ 'Sri Lanka']
+```
+
+
+Finally, this list contains the country where a sample was actually obtained from.
+```{python}
+# country where sample was taken
+country_sample = [
+ 'Barbados',
+ 'USA', # African American
+ 'Nigeria', #Nigeria - 1
+ 'Gambia',
+ 'Kenya',
+ 'Sierra Leone',
+ 'Nigeria', #Nigeria - 2
+ 'Colombia',
+ 'Mexico',
+ 'Peru',
+ 'Puerto Rico',
+ 'China',# Chinese Dai in Xishuangbanna
+ 'China',# Han Chinese - 1; Beijing
+ 'China',# Han Chinese - 2; Southern China
+ 'Japan',
+ 'Vietnam',
+ 'USA', #European Union
+ 'Finland',
+ 'UK',
+ 'Spain',
+ 'Italy',
+ 'Bangladesh',
+ 'UK',#India Gujarat, sampled in UK
+ 'UK',#India Telugu, sampled in UK
+ 'Pakistan',# Punjab
+ 'UK']
+```
+
+
+Names of flag files for use as icons. 
+
+For African Americans, the Pan-Africa frag is used, though there is likely a better choice.
+
+
+Unresolved:
+
+* For European Americans the European Union flag could be used used.
+* Chinese Dai?
+* Gujarat - Use state flag?
+* Telgu - use state flag?
+
+
+The Chin
+```{python}
+# for inserting flags
+icon = ['barbados.png',
+ 'pan_africa_flag.png', # African Union? Pan-Africa
+ 'nigeria.png', #Nigeria
+ 'gambia.png',
+ 'kenya.png',
+ 'sierra_leone.png',
+ 'nigeria.png', #Nigeria
+ 'colombia.png',
+ 'mexico.png',
+ 'peru.png',
+ 'puerto_rico.png',
+ 'china.png',# Chinese Dai in Xishuangbanna
+ 'china.png',# Han Chinese in Beijing
+ 'china.png',# Han Chinese - Southern, China
+ 'japan.png',
+ 'vietnam.png',
+ 'USA.png', #European Union
+ 'finland.png',
+ 'UK.png',
+ 'spain.png',
+ 'italy.png',
+ 'bangladesh.png',
+ 'india.png',#india Gujarat
+ 'india.png',#India Telugu
+ 'pakistan.png',#India  Punjab
+ 'sri_lanka.png']
+```
+
+
+## Finalizing distance matrix
+
+Stored and Remove the meta-data columns.
+```{python}
+# make copy
+sup_pop_and_pop = dist_mat_pd[["sup_pop","pop"]]
+
+
+# remove metadata
+dist_mat_only = dist_mat_pd.drop(["sup_pop","pop"], axis = 1)
+
+# save new column names
+cols_dist_mat_only = dist_mat_only.columns
+```
+
+Round everything off 
+```{python}
+dist_mat_only = dist_mat_only.round()
+```
+
+Set the columns to None.  In case numbers are shown on the final table, I want the diagonal to be blank, which can be done in great_tables.  This could also be done with numpy.diagonal, but in this case I knew that the diagonal elements are all 0 (or very very close).
+```{python}
+dist_mat_only[dist_mat_only< 0.01] = None
+```
+
+### Scaling:
+
+In order to increase the contrast based on color all elements are min-max scaled and set to a range of 0 to 100
+```{python}
+# find min/max for scaling
+global_min = dist_mat_only.min().min()
+global_max = dist_mat_only.max().max()
+dist_mat_only = (dist_mat_only-global_min)/global_max*100
+```
+
+
+### Work with upper triangle
+
+Set off diagonal to 0
+
+```{python}
+dist_mat_tri0 = np.tril(dist_mat_only)
+```
+
+```{python}
+dist_mat_only2 = pd.DataFrame.from_records(dist_mat_tri0)
+```
+
+
+Add the columns back
+```{python}
+dist_mat_only2.columns = cols_dist_mat_only
+```
+
+Looks like numpy un-rounded us
+```{python}
+dist_mat_only2 = dist_mat_only2.round()
+```
+
+## Add meta-data
+
+```{python}
+dist_mat_only2["oneKG_pop"] = cols_dist_mat_only
+dist_mat_only2["country/Location"] = geographic_sample #
+dist_mat_only2["pop_details"] = pop_details
+dist_mat_only2["ethnic_cultural_group"] = ethnic_group
+dist_mat_only2["sup_pop"] = sup_pop_orig
+dist_mat_only2["sup_pop_alt"] = sup_pop_alt
+dist_mat_only2["icon"] = icon
+```
+
+
+## Inserting empty rows
+
+I experimented with this but did not use in the final table
+
+
+```{python, eval = F}
+filler_row = pd.DataFrame(np.repeat(None,dist_mat_only2shape[1])).T
+filler_row.columns = dist_mat_pd.columns
+dist_mat_only3 = pd.concat([dist_mat_only2.iloc[:7], 
+              filler_row, 
+              dist_mat_only2.iloc[7:11],
+              filler_row, 
+              dist_mat_only2.iloc[11:15],
+              filler_row, 
+              dist_mat_only2.iloc[16:20],
+              filler_row, 
+              dist_mat_only2.iloc[21:]
+              ]).reset_index(drop=True)
+```
+
+
+
+
+## great_tables groupings etc.
+
+The series below define key groups of rows / columns.
+
+```{python}
+# columns that will be numeric in table
+num_cols = ['ACB','ASW', 'ESN', 'GWD', 'LWK', 'MSL', 'YRI',
+            'CLM', 'MXL', 'PEL', 'PUR',
+            'CDX', 'CHB', 'CHS', 'JPT', 'KHV',
+            'CEU','FIN','GBR','IBS','TSI', 
+            'BEB', 'GIH', 'ITU', 'PJL', 'STU']
+
+# super population groups
+## for creating spanners in table
+africa_AFR    = ['ACB','ASW','ESN','GWD','LWK','MSL','YRI']
+americas_AMR  = ['CLM','MXL','PEL','PUR']
+east_asia_EAS = ['CDX','CHB','CHS','JPT','KHV']
+europe_EUR    = ['CEU','FIN','GBR','IBS','TSI']
+southasia_SAS = ['BEB','GIH','ITU','PJL','STU']
+
+
+```
+
+
+Preview the table with bare call to GT()
+```{python}
+GT(dist_mat_only2)
+```
+
+Hidden columns:
+
+* 'country/Location' 
+* 'pop_details' 
+* 'sup_pop'  (from sup_pop_orig)
+* 'sup_pop_alt'
+
+Used:
+
+* 'icon'
+* 'oneKG_pop'
+* 'ethnic_cultural_group'
+       
+
+Preview the table with all major elements (not rendered)
+```{python, eval = T, eval = F}
+from great_tables import GT, md, html, style, loc
+# make my table
+(
+    GT(dist_mat_only2).tab_style(
+        style=style.text(size = "0"),
+        locations=loc.body(columns=num_cols)
+    )
+    .tab_header(title="Genetic distance between 1000 Genomes populations",
+     subtitle="Subtitle goes here"
+     )
+    .cols_hide(columns=[
+      "country/Location", # previously "country"
+      "pop_details",
+      "sup_pop",
+      "sup_pop_alt"])
+    .fmt_image("icon", path="icons/")
+    #.tab_stub(
+    #  rowname_col="row", 
+    #  groupname_col="sup_pop"
+    #)
+    .tab_spanner(
+        label="Group",
+        columns=[
+                #"sup_pop", 
+                "oneKG_pop",
+                "icon"
+                ]
+    )
+    .tab_spanner(
+        label="Africa",
+        columns=africa_AFR
+    )
+    .tab_spanner(
+        label="Americas",
+        columns=americas_AMR
+    )
+    .tab_spanner(
+        label="East Asia",
+        columns=east_asia_EAS
+    )
+    .tab_spanner(
+        label="Western Europe",
+        columns=europe_EUR
+    )
+    .tab_spanner(
+        label="South Asia",
+        columns=southasia_SAS
+    )
+    .tab_spanner(
+        label="Genetic Distances",
+        columns=num_cols
+    )
+    .tab_spanner(
+        label="Notes",
+        columns=[
+                 "ethnic_cultural_group"#,
+                 #"country_sampling"
+                 ]
+    )
+    .cols_label(
+        #sup_pop = "Super population",
+        oneKG_pop = "1KG Population Code",
+        #country_sampling = "Sampling location",
+        ethnic_cultural_group = "Ethnic / Cultural Group",
+        icon = "Geographic Origin"
+    )
+    .cols_align(align="center")
+    .fmt_number(columns=num_cols, decimals=0, use_seps=False)
+    #.sub_zero(zero_text='nil')
+    .data_color(
+        domain=[90, 0],
+        palette=["white", "orange"],
+        na_color="white",
+    )
+    .tab_source_note(source_note="Add citation")
+    .cols_move_to_start(columns=[#"sup_pop", 
+      "icon",
+                                "pop"])
+
+)
+```
+
+
+
+
+## Save the final file
+
+```{python}
+# Save final table
+dist_mat_only2.to_csv("dist_mat_final.csv", index= None)
+```
+
+
+
+
+
+
+
+
+
+
+

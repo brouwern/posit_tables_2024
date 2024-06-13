@@ -2,8 +2,6 @@
 title: "About"
 ---
 
-About this site
+Nathan L. Brouwer, PhD
 
-```{r}
-1 + 1
-```
+brouwern at gmail.com

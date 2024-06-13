@@ -9,6 +9,7 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - final_data_preparation.qmd
 
 format:
   html:
