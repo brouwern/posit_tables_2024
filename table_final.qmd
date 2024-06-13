@@ -1,32 +1,22 @@
 ---
-title: "1000 Genomes - Sample information"
-editor_options: 
-  chunk_output_type: inline
+title: "Untitled"
+format: html
 ---
 
-This is a Quarto website.
+# Build table
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-library(reticulate)
-#py_install("pandas")
-#py_install("polars")
-#py_install("seaborn")
-```
-
+## Load data
 ```{python}
 import polars as pl
 import pandas as pd
 import numpy as np
 from great_tables import GT, md, html
-```
-
-
-```{python}
 dist_mat_pl = pl.read_csv("distance_matrix.csv")
 dist_mat_pd = pd.read_csv("distance_matrix.csv")
 ```
+
+## Prep
+
 
 ```{python}
 # columns that will be numeric in table
@@ -284,7 +274,6 @@ dist_mat_pd2.head()
 #    .fmt_image("icon", path="icons/")
 #)
 ```
-
 ```{python}
 from great_tables import GT, md, html
 # make my table
@@ -358,3 +347,7 @@ from great_tables import GT, md, html
 
 
 
+
+```{python}
+!quarto publish quarto-pub
+```
