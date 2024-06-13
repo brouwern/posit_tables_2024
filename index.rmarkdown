@@ -4,7 +4,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r, echo = F, warning = F, message = F}
 library(reticulate)
 #py_install("pandas")
@@ -19,8 +18,6 @@ import numpy as np
 from great_tables import GT, md, html, style, loc
 ```
 
-
-
 ```{python,echo = F, warning = F, message = F}
 import pandas as pd
 import polars as pl
@@ -28,11 +25,62 @@ dist_mat_pd = pd.read_csv("dist_mat_final.csv")
 dist_mat_pl = pl.read_csv("dist_mat_final.csv")
 ```
 
-
-
 ```{python, echo = F}
-# Define groups for spanners
-## AND select anything to be excluded
+# use 3 populations per general region
+pops_use = [# African populations
+            #'ACB',
+            #'ASW', 'ESN', 
+            'GWD', 'LWK', 
+            #'MSL', 
+            'YRI',
+            
+            # Americas
+            #'CLM', 
+            'MXL', 'PEL', 'PUR', 
+            
+            'CDX', 
+            #'CHB', 
+            #'CHS', 
+            'JPT', 'KHV',
+            
+            #'CEU',
+            'FIN','GBR','IBS',
+            #'TSI', 
+            
+            #'BEB', 
+            #'GIH', 
+            'ITU',
+            'PJL', 'STU']
+```
+
+```{python}
+# columns that will be numeric in table
+num_cols = ['ACB',
+            #'ASW', 'ESN', 
+            'GWD', 'LWK', 
+            #'MSL', 
+            'YRI',
+            #'CLM', 
+            'MXL', 'PEL', 'PUR',
+            'CDX', 
+            #'CHB', 'CHS', 
+            'JPT', 'KHV',
+            #'CEU',
+            'FIN','GBR','IBS',
+            #'TSI', 
+            #'BEB', 'GIH',
+             'ITU', 'PJL', 'STU']
+
+# super population groups
+## for creating spanners in table
+africa_AFR    = ['ACB','ASW','ESN','GWD','LWK','MSL','YRI']
+americas_AMR  = ['CLM','MXL','PEL','PUR']
+east_asia_EAS = ['CDX','CHB','CHS','JPT','KHV']
+europe_EUR    = ['CEU','FIN','GBR','IBS','TSI']
+southasia_SAS = ['BEB','GIH','ITU','PJL','STU']
+```
+
+```{python}
 africa_AFR    = ['ACB',
                  #'ASW','ESN',
                  'GWD','LWK',
@@ -51,25 +99,24 @@ europe_EUR    = [#'CEU',
 southasia_SAS = [#'BEB','GIH',
                 'ITU','PJL','STU']
                 
-# combine into single list                
 numeric_cols = africa_AFR+americas_AMR+east_asia_EAS+europe_EUR+southasia_SAS
 
 ```
 
-```{python, echo = F}
-# columns with meta data
+```{python}
 meta_cols = ['sup_pop', 'oneKG_pop', 'country/Location', 'pop_details', 'ethnic_cultural_group',
        'sup_pop_alt', 'icon']
-       
-# all columns used
-cols_use = numeric_cols+meta_cols
+```
 
-# rows used
+```{python}
+cols_use = numeric_cols+meta_cols
+```
+
+```{python}
 rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
 ```
 
-
-```{python, echo = F}
+```{python, eval = T}
 from great_tables import GT, md, html, style, loc
 # make my table
 (

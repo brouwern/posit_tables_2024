@@ -285,8 +285,14 @@ Set off diagonal to 0
 dist_mat_tri0 = np.tril(dist_mat_only)
 ```
 
+Reformat to dataframe
 ```{python}
 dist_mat_only2 = pd.DataFrame.from_records(dist_mat_tri0)
+```
+
+Set values to None
+```{python}
+dist_mat_only2[dist_mat_only2< 0] = None
 ```
 
 
