@@ -1,0 +1,27 @@
+---
+title: "1000 Genomes - Sample information"
+---
+
+This is a Quarto website.
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+```{r}
+library(reticulate)
+#py_install("pandas")
+#py_install("polars")
+#py_install("seaborn")
+```
+
+
+```{r}
+people <- read.csv("1000genomes_people_info.csv")
+head(people)
+```
+
+```{python}
+import pandas as pd
+import polars as ps
+import great_tables as GT
+```
+

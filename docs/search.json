@@ -1,0 +1,9 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "1000 Genomes - Sample information",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\nlibrary(reticulate)\n\nWarning: package 'reticulate' was built under R version 4.3.3\n\n#py_install(\"pandas\")\n#py_install(\"polars\")\n#py_install(\"seaborn\")\n\n\npeople &lt;- read.csv(\"1000genomes_people_info.csv\")\nhead(people)\n\n  pop super_pop  sample    sex  lat    lng\n1 ACB       AFR HG01914   male 13.1 -59.62\n2 ACB       AFR HG02144 female 13.1 -59.62\n3 ACB       AFR HG01915 female 13.1 -59.62\n4 ACB       AFR HG02511 female 13.1 -59.62\n5 ACB       AFR HG02255   male 13.1 -59.62\n6 ACB       AFR HG02318 female 13.1 -59.62\n\n\n\nimport pandas as pd\nimport polars as ps\nimport great_tables as GT"
+  }
+]
