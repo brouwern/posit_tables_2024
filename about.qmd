@@ -2,6 +2,6 @@
 title: "About"
 ---
 
-Nathan L. Brouwer, PhD
+**Nathan L. Brouwer, PhD**
 
 brouwern at gmail.com

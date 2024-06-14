@@ -20,3 +20,5 @@ format:
 
 editor: visual
 
+execute:
+  cache: false

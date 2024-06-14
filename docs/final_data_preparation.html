@@ -233,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Expanded background information about each population is shown below. I’ll edit this by hand to make further columns.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># full population details - for notes columns</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pop_details <span class="op">=</span> [<span class="st">'African Caribbean in Barbados'</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pop_details <span class="op">=</span> [<span class="st">'African Caribbean in Barbados'</span>, <span class="co">#</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> <span class="st">'African Ancestry in SW USA'</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> <span class="st">'Esan in Nigeria'</span>,</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a> <span class="st">'Gambian in Western Division – Mandinka'</span>,</span>
@@ -275,8 +275,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a> <span class="st">'Peruvian'</span>,</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a> <span class="st">'Puerto Rican'</span>,</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a> <span class="st">'Dai'</span>, <span class="co"># China</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han'</span>,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han'</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han-North'</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a> <span class="st">'Han-South'</span>,</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a> <span class="st">'Japanese'</span>,</span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a> <span class="st">'Kinh'</span>, <span class="co"># in Ho Chi Minh City, Vietnam</span></span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a> <span class="st">'European American'</span>,</span>
@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a> <span class="st">'Tamil'</span>] <span class="co">#Sri Lankan Tamil in the UK</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This next list contains the country the samples were collected in, their historical geographic origins, or where the group has the largest populations. In several cases data were collected “in diaspora” and the geographic location assigned to the origin as reported by the 1000 Genomes Project. Therefore, Indians living in the UK were assigned to India. For African-American and European-Americans, “Africa” and “Europe” were used.</p>
-<p>Note that the Dai were sampled from China. Wikipedia states “The Dai people form one of the 56 ethnic groups officially recognized by the People’s Republic of China. By extension, the term can apply to groups in Laos, Vietnam, Thailand and Myanmar when Dai is used to mean specifically Tai Yai, Lue, Chinese Shan, Tai Dam, Tai Khao or even Tai in general.” I therefore coded them as “SE-Asia”</p>
+<p>Note that the Dai were sampled from China. Wikipedia states “The Dai people form one of the 56 ethnic groups officially recognized by the People’s Republic of China. By extension, the term can apply to groups in Laos, Vietnam, Thailand and Myanmar when Dai is used to mean specifically Tai Yai, Lue, Chinese Shan, Tai Dam, Tai Khao or even Tai in general.” (<a href="https://en.wikipedia.org/wiki/Dai_people">en.wikipedia.org/wiki/Dai_people</a>) I therefore coded them as “SE-Asia”</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>geographic_sample <span class="op">=</span> [</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="st">'Barbados'</span>,</span>
@@ -407,55 +407,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save new column names</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>cols_dist_mat_only <span class="op">=</span> dist_mat_only.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Round everything off</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only <span class="op">=</span> dist_mat_only.<span class="bu">round</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Set the columns to None. In case numbers are shown on the final table, I want the diagonal to be blank, which can be done in great_tables. This could also be done with numpy.diagonal, but in this case I knew that the diagonal elements are all 0 (or very very close).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only[dist_mat_only<span class="op">&lt;</span> <span class="fl">0.01</span>] <span class="op">=</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dist_mat_only[dist_mat_only&lt; 0.01] = None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="scaling" class="level3">
 <h3 class="anchored" data-anchor-id="scaling">Scaling:</h3>
 <p>In order to increase the contrast based on color all elements are min-max scaled and set to a range of 0 to 100</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find min/max for scaling</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>global_min <span class="op">=</span> dist_mat_only.<span class="bu">min</span>().<span class="bu">min</span>()</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>global_max <span class="op">=</span> dist_mat_only.<span class="bu">max</span>().<span class="bu">max</span>()</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>dist_mat_only <span class="op">=</span> (dist_mat_only<span class="op">-</span>global_min)<span class="op">/</span>global_max<span class="op">*</span><span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find min/max for scaling</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>global_min <span class="op">=</span> dist_mat_only.<span class="bu">min</span>().<span class="bu">min</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>global_max <span class="op">=</span> dist_mat_only.<span class="bu">max</span>().<span class="bu">max</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>dist_mat_only <span class="op">=</span> (dist_mat_only<span class="op">-</span>global_min)<span class="op">/</span>global_max<span class="op">*</span><span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="work-with-upper-triangle" class="level3">
 <h3 class="anchored" data-anchor-id="work-with-upper-triangle">Work with upper triangle</h3>
 <p>Set off diagonal to 0</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dist_mat_tri0 <span class="op">=</span> np.tril(dist_mat_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dist_mat_tri0 <span class="op">=</span> np.tril(dist_mat_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Reformat to dataframe</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2 <span class="op">=</span> pd.DataFrame.from_records(dist_mat_tri0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2 <span class="op">=</span> pd.DataFrame.from_records(dist_mat_tri0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Set values to None</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[dist_mat_only2<span class="op">&lt;</span> <span class="fl">0.001</span>] <span class="op">=</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[dist_mat_only2<span class="op">&lt;</span> <span class="fl">0.001</span>] <span class="op">=</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Add the columns back</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.columns <span class="op">=</span> cols_dist_mat_only</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.columns <span class="op">=</span> cols_dist_mat_only</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Looks like numpy un-rounded us</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2 <span class="op">=</span> dist_mat_only2.<span class="bu">round</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2 <span class="op">=</span> dist_mat_only2.<span class="bu">round</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   ACB   ASW  ESN   GWD  LWK  MSL  YRI  ...  IBS  TSI  BEB  GIH  ITU  PJL  STU
-0  NaN   NaN  NaN   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
-1  8.0   NaN  NaN   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
-2  4.0  17.0  NaN   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
-3  8.0  17.0  8.0   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
-4  8.0  17.0  8.0  12.0  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+<pre><code>    ACB   ASW   ESN   GWD  LWK  MSL  YRI  ...  IBS  TSI  BEB  GIH  ITU  PJL  STU
+0   NaN   NaN   NaN   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+1  18.0   NaN   NaN   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+2  14.0  23.0   NaN   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+3  15.0  25.0  19.0   NaN  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+4  16.0  25.0  16.0  21.0  NaN  NaN  NaN  ...  NaN  NaN  NaN  NaN  NaN  NaN  NaN
 
 [5 rows x 26 columns]</code></pre>
 </div>
@@ -465,101 +461,101 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="add-meta-data" class="level2">
 <h2 class="anchored" data-anchor-id="add-meta-data">Add meta-data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"oneKG_pop"</span>] <span class="op">=</span> cols_dist_mat_only</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"country/Location"</span>] <span class="op">=</span> geographic_sample <span class="co">#</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"pop_details"</span>] <span class="op">=</span> pop_details</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"ethnic_cultural_group"</span>] <span class="op">=</span> ethnic_group</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"sup_pop"</span>] <span class="op">=</span> sup_pop_orig</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"sup_pop_alt"</span>] <span class="op">=</span> sup_pop_alt</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"icon"</span>] <span class="op">=</span> icon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"oneKG_pop"</span>] <span class="op">=</span> cols_dist_mat_only</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"country/Location"</span>] <span class="op">=</span> geographic_sample <span class="co">#</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"pop_details"</span>] <span class="op">=</span> pop_details</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"ethnic_cultural_group"</span>] <span class="op">=</span> ethnic_group</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"sup_pop"</span>] <span class="op">=</span> sup_pop_orig</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"sup_pop_alt"</span>] <span class="op">=</span> sup_pop_alt</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>dist_mat_only2[<span class="st">"icon"</span>] <span class="op">=</span> icon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="inserting-empty-rows" class="level2">
 <h2 class="anchored" data-anchor-id="inserting-empty-rows">Inserting empty rows</h2>
 <p>I experimented with this but did not use in the final table</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>filler_row <span class="op">=</span> pd.DataFrame(np.repeat(<span class="va">None</span>,dist_mat_only2shape[<span class="dv">1</span>])).T</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>filler_row.columns <span class="op">=</span> dist_mat_pd.columns</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>dist_mat_only3 <span class="op">=</span> pd.concat([dist_mat_only2.iloc[:<span class="dv">7</span>], </span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">7</span>:<span class="dv">11</span>],</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">11</span>:<span class="dv">15</span>],</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">16</span>:<span class="dv">20</span>],</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">21</span>:]</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>              ]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>filler_row <span class="op">=</span> pd.DataFrame(np.repeat(<span class="va">None</span>,dist_mat_only2shape[<span class="dv">1</span>])).T</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>filler_row.columns <span class="op">=</span> dist_mat_pd.columns</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>dist_mat_only3 <span class="op">=</span> pd.concat([dist_mat_only2.iloc[:<span class="dv">7</span>], </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">7</span>:<span class="dv">11</span>],</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">11</span>:<span class="dv">15</span>],</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">16</span>:<span class="dv">20</span>],</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>              filler_row, </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>              dist_mat_only2.iloc[<span class="dv">21</span>:]</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>              ]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="great_tables-groupings-etc." class="level2">
 <h2 class="anchored" data-anchor-id="great_tables-groupings-etc.">great_tables groupings etc.</h2>
 <p>The series below define key groups of rows / columns.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># columns that will be numeric in table</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [<span class="st">'ACB'</span>,<span class="st">'ASW'</span>, <span class="st">'ESN'</span>, <span class="st">'GWD'</span>, <span class="st">'LWK'</span>, <span class="st">'MSL'</span>, <span class="st">'YRI'</span>,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CLM'</span>, <span class="st">'MXL'</span>, <span class="st">'PEL'</span>, <span class="st">'PUR'</span>,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CDX'</span>, <span class="st">'CHB'</span>, <span class="st">'CHS'</span>, <span class="st">'JPT'</span>, <span class="st">'KHV'</span>,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CEU'</span>,<span class="st">'FIN'</span>,<span class="st">'GBR'</span>,<span class="st">'IBS'</span>,<span class="st">'TSI'</span>, </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">'BEB'</span>, <span class="st">'GIH'</span>, <span class="st">'ITU'</span>, <span class="st">'PJL'</span>, <span class="st">'STU'</span>]</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># super population groups</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">## for creating spanners in table</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>africa_AFR    <span class="op">=</span> [<span class="st">'ACB'</span>,<span class="st">'ASW'</span>,<span class="st">'ESN'</span>,<span class="st">'GWD'</span>,<span class="st">'LWK'</span>,<span class="st">'MSL'</span>,<span class="st">'YRI'</span>]</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>americas_AMR  <span class="op">=</span> [<span class="st">'CLM'</span>,<span class="st">'MXL'</span>,<span class="st">'PEL'</span>,<span class="st">'PUR'</span>]</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>east_asia_EAS <span class="op">=</span> [<span class="st">'CDX'</span>,<span class="st">'CHB'</span>,<span class="st">'CHS'</span>,<span class="st">'JPT'</span>,<span class="st">'KHV'</span>]</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>europe_EUR    <span class="op">=</span> [<span class="st">'CEU'</span>,<span class="st">'FIN'</span>,<span class="st">'GBR'</span>,<span class="st">'IBS'</span>,<span class="st">'TSI'</span>]</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>southasia_SAS <span class="op">=</span> [<span class="st">'BEB'</span>,<span class="st">'GIH'</span>,<span class="st">'ITU'</span>,<span class="st">'PJL'</span>,<span class="st">'STU'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># columns that will be numeric in table</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [<span class="st">'ACB'</span>,<span class="st">'ASW'</span>, <span class="st">'ESN'</span>, <span class="st">'GWD'</span>, <span class="st">'LWK'</span>, <span class="st">'MSL'</span>, <span class="st">'YRI'</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CLM'</span>, <span class="st">'MXL'</span>, <span class="st">'PEL'</span>, <span class="st">'PUR'</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CDX'</span>, <span class="st">'CHB'</span>, <span class="st">'CHS'</span>, <span class="st">'JPT'</span>, <span class="st">'KHV'</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CEU'</span>,<span class="st">'FIN'</span>,<span class="st">'GBR'</span>,<span class="st">'IBS'</span>,<span class="st">'TSI'</span>, </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">'BEB'</span>, <span class="st">'GIH'</span>, <span class="st">'ITU'</span>, <span class="st">'PJL'</span>, <span class="st">'STU'</span>]</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># super population groups</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">## for creating spanners in table</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>africa_AFR    <span class="op">=</span> [<span class="st">'ACB'</span>,<span class="st">'ASW'</span>,<span class="st">'ESN'</span>,<span class="st">'GWD'</span>,<span class="st">'LWK'</span>,<span class="st">'MSL'</span>,<span class="st">'YRI'</span>]</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>americas_AMR  <span class="op">=</span> [<span class="st">'CLM'</span>,<span class="st">'MXL'</span>,<span class="st">'PEL'</span>,<span class="st">'PUR'</span>]</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>east_asia_EAS <span class="op">=</span> [<span class="st">'CDX'</span>,<span class="st">'CHB'</span>,<span class="st">'CHS'</span>,<span class="st">'JPT'</span>,<span class="st">'KHV'</span>]</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>europe_EUR    <span class="op">=</span> [<span class="st">'CEU'</span>,<span class="st">'FIN'</span>,<span class="st">'GBR'</span>,<span class="st">'IBS'</span>,<span class="st">'TSI'</span>]</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>southasia_SAS <span class="op">=</span> [<span class="st">'BEB'</span>,<span class="st">'GIH'</span>,<span class="st">'ITU'</span>,<span class="st">'PJL'</span>,<span class="st">'STU'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Preview the table with bare call to GT()</p>
+<p>Preview the full table with bare call to GT()</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>GT(dist_mat_only2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>GT(dist_mat_only2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="kzoxptysvf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="xanwwlpvtb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#kzoxptysvf table {
+#xanwwlpvtb table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#kzoxptysvf thead, tbody, tfoot, tr, td, th { border-style: none; }
+#xanwwlpvtb thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#kzoxptysvf p { margin: 0; padding: 0; }
- #kzoxptysvf .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #kzoxptysvf .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #kzoxptysvf .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #kzoxptysvf .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #kzoxptysvf .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #kzoxptysvf .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #kzoxptysvf .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #kzoxptysvf .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #kzoxptysvf .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #kzoxptysvf .gt_column_spanner_outer:first-child { padding-left: 0; }
- #kzoxptysvf .gt_column_spanner_outer:last-child { padding-right: 0; }
- #kzoxptysvf .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #kzoxptysvf .gt_spanner_row { border-bottom-style: hidden; }
- #kzoxptysvf .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #kzoxptysvf .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #kzoxptysvf .gt_from_md> :first-child { margin-top: 0; }
- #kzoxptysvf .gt_from_md> :last-child { margin-bottom: 0; }
- #kzoxptysvf .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #kzoxptysvf .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #kzoxptysvf .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #kzoxptysvf .gt_row_group_first td { border-top-width: 2px; }
- #kzoxptysvf .gt_row_group_first th { border-top-width: 2px; }
- #kzoxptysvf .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #kzoxptysvf .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #kzoxptysvf .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #kzoxptysvf .gt_left { text-align: left; }
- #kzoxptysvf .gt_center { text-align: center; }
- #kzoxptysvf .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #kzoxptysvf .gt_font_normal { font-weight: normal; }
- #kzoxptysvf .gt_font_bold { font-weight: bold; }
- #kzoxptysvf .gt_font_italic { font-style: italic; }
- #kzoxptysvf .gt_super { font-size: 65%; }
- #kzoxptysvf .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #kzoxptysvf .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#xanwwlpvtb p { margin: 0; padding: 0; }
+ #xanwwlpvtb .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #xanwwlpvtb .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #xanwwlpvtb .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #xanwwlpvtb .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #xanwwlpvtb .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #xanwwlpvtb .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #xanwwlpvtb .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #xanwwlpvtb .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #xanwwlpvtb .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #xanwwlpvtb .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #xanwwlpvtb .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #xanwwlpvtb .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #xanwwlpvtb .gt_spanner_row { border-bottom-style: hidden; }
+ #xanwwlpvtb .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #xanwwlpvtb .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #xanwwlpvtb .gt_from_md> :first-child { margin-top: 0; }
+ #xanwwlpvtb .gt_from_md> :last-child { margin-bottom: 0; }
+ #xanwwlpvtb .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #xanwwlpvtb .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #xanwwlpvtb .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #xanwwlpvtb .gt_row_group_first td { border-top-width: 2px; }
+ #xanwwlpvtb .gt_row_group_first th { border-top-width: 2px; }
+ #xanwwlpvtb .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #xanwwlpvtb .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #xanwwlpvtb .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #xanwwlpvtb .gt_left { text-align: left; }
+ #xanwwlpvtb .gt_center { text-align: center; }
+ #xanwwlpvtb .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #xanwwlpvtb .gt_font_normal { font-weight: normal; }
+ #xanwwlpvtb .gt_font_bold { font-weight: bold; }
+ #xanwwlpvtb .gt_font_italic { font-style: italic; }
+ #xanwwlpvtb .gt_super { font-size: 65%; }
+ #xanwwlpvtb .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #xanwwlpvtb .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -638,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">barbados.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">18.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -673,8 +669,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">pan_africa_flag.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">4.0</td>
-<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">14.0</td>
+<td class="gt_row gt_right">23.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -708,9 +704,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">nigeria.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">15.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">19.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -743,10 +739,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">gambia.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">16.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">16.0</td>
+<td class="gt_row gt_right">21.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -778,11 +774,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">kenya.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">8.0</td>
 <td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">18.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">19.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -813,12 +809,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">sierra_leone.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">16.0</td>
+<td class="gt_row gt_right">24.0</td>
+<td class="gt_row gt_right">15.0</td>
+<td class="gt_row gt_right">19.0</td>
+<td class="gt_row gt_right">19.0</td>
+<td class="gt_row gt_right">16.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -848,13 +844,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">nigeria.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">63.0</td>
+<td class="gt_row gt_right">53.0</td>
+<td class="gt_row gt_right">70.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">72.0</td>
+<td class="gt_row gt_right">71.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -883,14 +879,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">colombia.png</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_right">61.0</td>
 <td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">66.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">70.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">22.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -918,15 +914,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">mexico.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">64.0</td>
 <td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">21.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">72.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">28.0</td>
+<td class="gt_row gt_right">15.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -953,16 +949,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">peru.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">4.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">60.0</td>
+<td class="gt_row gt_right">49.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">64.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">14.0</td>
+<td class="gt_row gt_right">27.0</td>
+<td class="gt_row gt_right">34.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -988,17 +984,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">puerto_rico.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">84.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">52.0</td>
+<td class="gt_row gt_right">56.0</td>
 <td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">62.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1023,18 +1019,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">china.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">82.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">80.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">84.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">53.0</td>
+<td class="gt_row gt_right">57.0</td>
+<td class="gt_row gt_right">72.0</td>
+<td class="gt_row gt_right">16.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1052,25 +1048,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">CHB</td>
 <td class="gt_row gt_left">China-NE</td>
 <td class="gt_row gt_left">Han Chinese in Beijing, China</td>
-<td class="gt_row gt_left">Han</td>
+<td class="gt_row gt_left">Han-North</td>
 <td class="gt_row gt_left">EAS</td>
 <td class="gt_row gt_left">EAS</td>
 <td class="gt_row gt_left">china.png</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">82.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">83.0</td>
 <td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">4.0</td>
-<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">51.0</td>
+<td class="gt_row gt_right">56.0</td>
+<td class="gt_row gt_right">70.0</td>
+<td class="gt_row gt_right">11.0</td>
+<td class="gt_row gt_right">8.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1087,26 +1083,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">CHS</td>
 <td class="gt_row gt_left">China-SE</td>
 <td class="gt_row gt_left">Han Chinese - Southern, China</td>
-<td class="gt_row gt_left">Han</td>
+<td class="gt_row gt_left">Han-South</td>
 <td class="gt_row gt_left">EAS</td>
 <td class="gt_row gt_left">EAS</td>
 <td class="gt_row gt_left">china.png</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_right">82.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">86.0</td>
+<td class="gt_row gt_right">85.0</td>
+<td class="gt_row gt_right">84.0</td>
+<td class="gt_row gt_right">88.0</td>
+<td class="gt_row gt_right">88.0</td>
 <td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">59.0</td>
+<td class="gt_row gt_right">63.0</td>
 <td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">21.0</td>
+<td class="gt_row gt_right">16.0</td>
+<td class="gt_row gt_right">16.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1128,21 +1124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">japan.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">71.0</td>
 <td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right"><na></na></td>
-<td class="gt_row gt_right">4.0</td>
-<td class="gt_row gt_right"><na></na></td>
-<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">74.0</td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">78.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">66.0</td>
+<td class="gt_row gt_right">51.0</td>
+<td class="gt_row gt_right">56.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">14.0</td>
+<td class="gt_row gt_right">10.0</td>
+<td class="gt_row gt_right">21.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1163,22 +1159,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">vietnam.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">21.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">66.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">81.0</td>
+<td class="gt_row gt_right">84.0</td>
+<td class="gt_row gt_right">86.0</td>
+<td class="gt_row gt_right">86.0</td>
+<td class="gt_row gt_right">27.0</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">48.0</td>
+<td class="gt_row gt_right">25.0</td>
+<td class="gt_row gt_right">87.0</td>
 <td class="gt_row gt_right">88.0</td>
-<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">86.0</td>
+<td class="gt_row gt_right">95.0</td>
+<td class="gt_row gt_right">85.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1198,23 +1194,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">USA.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">83.0</td>
-<td class="gt_row gt_right">83.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">82.0</td>
+<td class="gt_row gt_right">72.0</td>
 <td class="gt_row gt_right">88.0</td>
-<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">85.0</td>
+<td class="gt_row gt_right">89.0</td>
+<td class="gt_row gt_right">91.0</td>
+<td class="gt_row gt_right">91.0</td>
+<td class="gt_row gt_right">37.0</td>
+<td class="gt_row gt_right">52.0</td>
+<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">93.0</td>
+<td class="gt_row gt_right">95.0</td>
+<td class="gt_row gt_right">93.0</td>
+<td class="gt_row gt_right">100.0</td>
 <td class="gt_row gt_right">92.0</td>
-<td class="gt_row gt_right">83.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">18.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1233,24 +1229,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">finland.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">82.0</td>
 <td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">85.0</td>
+<td class="gt_row gt_right">84.0</td>
+<td class="gt_row gt_right">27.0</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">26.0</td>
 <td class="gt_row gt_right">88.0</td>
-<td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right"><na></na></td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">89.0</td>
+<td class="gt_row gt_right">87.0</td>
+<td class="gt_row gt_right">95.0</td>
+<td class="gt_row gt_right">86.0</td>
+<td class="gt_row gt_right">9.0</td>
+<td class="gt_row gt_right">16.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1268,25 +1264,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">UK.png</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_right">69.0</td>
 <td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">25.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">4.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">73.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">78.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">31.0</td>
+<td class="gt_row gt_right">39.0</td>
+<td class="gt_row gt_right">14.0</td>
 <td class="gt_row gt_right">75.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">25.0</td>
-<td class="gt_row gt_right">12.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">74.0</td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">73.0</td>
+<td class="gt_row gt_right">18.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">21.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1303,26 +1299,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">spain.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right">25.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
-<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">74.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">78.0</td>
+<td class="gt_row gt_right">78.0</td>
+<td class="gt_row gt_right">19.0</td>
+<td class="gt_row gt_right">35.0</td>
+<td class="gt_row gt_right">40.0</td>
+<td class="gt_row gt_right">15.0</td>
 <td class="gt_row gt_right">79.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">8.0</td>
-<td class="gt_row gt_right">21.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right"><na></na></td>
+<td class="gt_row gt_right">79.0</td>
+<td class="gt_row gt_right">78.0</td>
+<td class="gt_row gt_right">87.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">16.0</td>
+<td class="gt_row gt_right">30.0</td>
+<td class="gt_row gt_right">19.0</td>
+<td class="gt_row gt_right">10.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1338,27 +1334,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">italy.png</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">56.0</td>
+<td class="gt_row gt_right">48.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">60.0</td>
+<td class="gt_row gt_right">61.0</td>
 <td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">60.0</td>
 <td class="gt_row gt_right">38.0</td>
+<td class="gt_row gt_right">36.0</td>
+<td class="gt_row gt_right">40.0</td>
+<td class="gt_row gt_right">37.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">72.0</td>
+<td class="gt_row gt_right">64.0</td>
+<td class="gt_row gt_right">55.0</td>
+<td class="gt_row gt_right">66.0</td>
+<td class="gt_row gt_right">55.0</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">45.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1373,28 +1369,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">bangladesh.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">29.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">57.0</td>
+<td class="gt_row gt_right">49.0</td>
+<td class="gt_row gt_right">63.0</td>
 <td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">64.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">39.0</td>
+<td class="gt_row gt_right">36.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">36.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">71.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">55.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">56.0</td>
+<td class="gt_row gt_right">42.0</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">15.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1408,29 +1404,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">india.png</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_right">56.0</td>
+<td class="gt_row gt_right">48.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">60.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">59.0</td>
+<td class="gt_row gt_right">45.0</td>
+<td class="gt_row gt_right">43.0</td>
 <td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">72.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">70.0</td>
+<td class="gt_row gt_right">77.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">73.0</td>
+<td class="gt_row gt_right">61.0</td>
 <td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">33.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">4.0</td>
-<td class="gt_row gt_right">8.0</td>
+<td class="gt_row gt_right">51.0</td>
+<td class="gt_row gt_right">11.0</td>
+<td class="gt_row gt_right">18.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
@@ -1443,30 +1439,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">india.png</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">17.0</td>
-<td class="gt_row gt_right">21.0</td>
-<td class="gt_row gt_right">25.0</td>
-<td class="gt_row gt_right">17.0</td>
 <td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">46.0</td>
+<td class="gt_row gt_right">48.0</td>
+<td class="gt_row gt_right">64.0</td>
+<td class="gt_row gt_right">62.0</td>
+<td class="gt_row gt_right">63.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">63.0</td>
+<td class="gt_row gt_right">26.0</td>
+<td class="gt_row gt_right">28.0</td>
 <td class="gt_row gt_right">33.0</td>
 <td class="gt_row gt_right">25.0</td>
-<td class="gt_row gt_right">25.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">67.0</td>
+<td class="gt_row gt_right">66.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">74.0</td>
+<td class="gt_row gt_right">65.0</td>
+<td class="gt_row gt_right">44.0</td>
+<td class="gt_row gt_right">55.0</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">32.0</td>
+<td class="gt_row gt_right">33.0</td>
+<td class="gt_row gt_right">19.0</td>
+<td class="gt_row gt_right">20.0</td>
+<td class="gt_row gt_right">24.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_left">PJL</td>
@@ -1478,31 +1474,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_left">pakistan.png</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_right">57.0</td>
 <td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">42.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">50.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">38.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">62.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">58.0</td>
-<td class="gt_row gt_right">54.0</td>
-<td class="gt_row gt_right">67.0</td>
-<td class="gt_row gt_right">54.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">61.0</td>
+<td class="gt_row gt_right">59.0</td>
+<td class="gt_row gt_right">47.0</td>
+<td class="gt_row gt_right">45.0</td>
+<td class="gt_row gt_right">48.0</td>
 <td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">46.0</td>
-<td class="gt_row gt_right">4.0</td>
+<td class="gt_row gt_right">72.0</td>
+<td class="gt_row gt_right">68.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">76.0</td>
+<td class="gt_row gt_right">69.0</td>
+<td class="gt_row gt_right">64.0</td>
+<td class="gt_row gt_right">75.0</td>
+<td class="gt_row gt_right">64.0</td>
+<td class="gt_row gt_right">53.0</td>
+<td class="gt_row gt_right">54.0</td>
 <td class="gt_row gt_right">12.0</td>
-<td class="gt_row gt_right"><na></na></td>
-<td class="gt_row gt_right">17.0</td>
+<td class="gt_row gt_right">20.0</td>
+<td class="gt_row gt_right">9.0</td>
+<td class="gt_row gt_right">27.0</td>
 <td class="gt_row gt_right"><na></na></td>
 <td class="gt_row gt_left">STU</td>
 <td class="gt_row gt_left">Sri Lanka</td>
@@ -1535,93 +1531,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Preview the table with all major elements (not rendered)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT, md, html, style, loc</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make my table</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    GT(dist_mat_only2).tab_style(</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        style<span class="op">=</span>style.text(size <span class="op">=</span> <span class="st">"0"</span>),</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        locations<span class="op">=</span>loc.body(columns<span class="op">=</span>num_cols)</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    .tab_header(title<span class="op">=</span><span class="st">"Genetic distance between 1000 Genomes populations"</span>,</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>     subtitle<span class="op">=</span><span class="st">"Subtitle goes here"</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>     )</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    .cols_hide(columns<span class="op">=</span>[</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"country/Location"</span>, <span class="co"># previously "country"</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pop_details"</span>,</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sup_pop"</span>,</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sup_pop_alt"</span>])</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    .fmt_image(<span class="st">"icon"</span>, path<span class="op">=</span><span class="st">"icons/"</span>)</span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.tab_stub(</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  rowname_col="row", </span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  groupname_col="sup_pop"</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)</span></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Group"</span>,</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[</span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>                <span class="co">#"sup_pop", </span></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"oneKG_pop"</span>,</span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"icon"</span></span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>                ]</span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Africa"</span>,</span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>africa_AFR</span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Americas"</span>,</span>
-<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>americas_AMR</span>
-<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"East Asia"</span>,</span>
-<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>east_asia_EAS</span>
-<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Western Europe"</span>,</span>
-<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>europe_EUR</span>
-<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"South Asia"</span>,</span>
-<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>southasia_SAS</span>
-<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Genetic Distances"</span>,</span>
-<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>num_cols</span>
-<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
-<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Notes"</span>,</span>
-<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[</span>
-<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"ethnic_cultural_group"</span><span class="co">#,</span></span>
-<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#"country_sampling"</span></span>
-<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>                 ]</span>
-<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>    .cols_label(</span>
-<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a>        <span class="co">#sup_pop = "Super population",</span></span>
-<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a>        oneKG_pop <span class="op">=</span> <span class="st">"1KG Population Code"</span>,</span>
-<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a>        <span class="co">#country_sampling = "Sampling location",</span></span>
-<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>        ethnic_cultural_group <span class="op">=</span> <span class="st">"Ethnic / Cultural Group"</span>,</span>
-<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a>        icon <span class="op">=</span> <span class="st">"Geographic Origin"</span></span>
-<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>    .cols_align(align<span class="op">=</span><span class="st">"center"</span>)</span>
-<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a>    .fmt_number(columns<span class="op">=</span>num_cols, decimals<span class="op">=</span><span class="dv">0</span>, use_seps<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.sub_zero(zero_text='nil')</span></span>
-<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a>    .data_color(</span>
-<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a>        domain<span class="op">=</span>[<span class="dv">90</span>, <span class="dv">0</span>],</span>
-<span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span>[<span class="st">"white"</span>, <span class="st">"orange"</span>],</span>
-<span id="cb28-73"><a href="#cb28-73" aria-hidden="true" tabindex="-1"></a>        na_color<span class="op">=</span><span class="st">"white"</span>,</span>
-<span id="cb28-74"><a href="#cb28-74" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-75"><a href="#cb28-75" aria-hidden="true" tabindex="-1"></a>    .tab_source_note(source_note<span class="op">=</span><span class="st">"Add citation"</span>)</span>
-<span id="cb28-76"><a href="#cb28-76" aria-hidden="true" tabindex="-1"></a>    .cols_move_to_start(columns<span class="op">=</span>[<span class="co">#"sup_pop", </span></span>
-<span id="cb28-77"><a href="#cb28-77" aria-hidden="true" tabindex="-1"></a>      <span class="st">"icon"</span>,</span>
-<span id="cb28-78"><a href="#cb28-78" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"pop"</span>])</span>
-<span id="cb28-79"><a href="#cb28-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-80"><a href="#cb28-80" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT, md, html, style, loc</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make my table</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    GT(dist_mat_only2).tab_style(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        style<span class="op">=</span>style.text(size <span class="op">=</span> <span class="st">"0"</span>),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        locations<span class="op">=</span>loc.body(columns<span class="op">=</span>num_cols)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    .tab_header(title<span class="op">=</span><span class="st">"Genetic distance between 1000 Genomes populations"</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>     subtitle<span class="op">=</span><span class="st">"Subtitle goes here"</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    .cols_hide(columns<span class="op">=</span>[</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>      <span class="co">#"country/Location", previously "country"</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pop_details"</span>,</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sup_pop"</span>,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sup_pop_alt"</span>])</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    .fmt_image(<span class="st">"icon"</span>, path<span class="op">=</span><span class="st">"icons/"</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.tab_stub(</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  rowname_col="row", </span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  groupname_col="sup_pop"</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Group"</span>,</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>                <span class="co">#"sup_pop", </span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"oneKG_pop"</span>,</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"icon"</span>,</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"country/Location"</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>                ]</span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Africa"</span>,</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>africa_AFR</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Americas"</span>,</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>americas_AMR</span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"East Asia"</span>,</span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>east_asia_EAS</span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Western Europe"</span>,</span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>europe_EUR</span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"South Asia"</span>,</span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>southasia_SAS</span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Genetic Distances"</span>,</span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>num_cols</span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a>    .tab_spanner(</span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Notes"</span>,</span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[</span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"ethnic_cultural_group"</span><span class="co">#,</span></span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#"country_sampling"</span></span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a>                 ]</span>
+<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.cols_move_to_start(columns=[#"sup_pop", </span></span>
+<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                            "country/Location",</span></span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                            "oneKG_pop",</span></span>
+<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                            "icon"])</span></span>
+<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.cols_label(</span></span>
+<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    #sup_pop = "Super population",</span></span>
+<span id="cb27-67"><a href="#cb27-67" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    oneKG_pop = "Population Code",</span></span>
+<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    #country_sampling = "Sampling location",</span></span>
+<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    ethnic_cultural_group = "Ethnic / Cultural Group",</span></span>
+<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    icon = "Geographic origin"</span></span>
+<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)</span></span>
+<span id="cb27-72"><a href="#cb27-72" aria-hidden="true" tabindex="-1"></a>    .cols_align(align<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb27-73"><a href="#cb27-73" aria-hidden="true" tabindex="-1"></a>    .fmt_number(columns<span class="op">=</span>num_cols, decimals<span class="op">=</span><span class="dv">0</span>, use_seps<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb27-74"><a href="#cb27-74" aria-hidden="true" tabindex="-1"></a>    <span class="co">#.sub_zero(zero_text='nil')</span></span>
+<span id="cb27-75"><a href="#cb27-75" aria-hidden="true" tabindex="-1"></a>    .data_color(</span>
+<span id="cb27-76"><a href="#cb27-76" aria-hidden="true" tabindex="-1"></a>        domain<span class="op">=</span>[<span class="dv">90</span>, <span class="dv">0</span>],</span>
+<span id="cb27-77"><a href="#cb27-77" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span>[<span class="st">"white"</span>, <span class="st">"orange"</span>],</span>
+<span id="cb27-78"><a href="#cb27-78" aria-hidden="true" tabindex="-1"></a>        na_color<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb27-79"><a href="#cb27-79" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-80"><a href="#cb27-80" aria-hidden="true" tabindex="-1"></a>    .tab_source_note(source_note<span class="op">=</span><span class="st">"Add citation"</span>)</span>
+<span id="cb27-81"><a href="#cb27-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-82"><a href="#cb27-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-83"><a href="#cb27-83" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="save-the-final-file" class="level2">
 <h2 class="anchored" data-anchor-id="save-the-final-file">Save the final file</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save final table</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.to_csv(<span class="st">"dist_mat_final.csv"</span>, index<span class="op">=</span> <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save final table</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>dist_mat_only2.to_csv(<span class="st">"dist_mat_final.csv"</span>, index<span class="op">=</span> <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

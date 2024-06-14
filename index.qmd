@@ -1,19 +1,19 @@
 ---
 title: "1000 Genomes - Sample information"
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 
-```{r, echo = F, warning = F, message = F}
+```{r}
 library(reticulate)
 #py_install("pandas")
 #py_install("polars")
 #py_install("seaborn")
 ```
 
-```{python, echo = F, warning = F, message = F}
-import polars as pl
+```{python, echo = F}
+#import polars as pl
 import pandas as pd
 import numpy as np
 from great_tables import GT, md, html, style, loc
@@ -21,11 +21,9 @@ from great_tables import GT, md, html, style, loc
 
 
 
-```{python,echo = F, warning = F, message = F}
-import pandas as pd
-import polars as pl
+```{python, echo = F}
 dist_mat_pd = pd.read_csv("dist_mat_final.csv")
-dist_mat_pl = pl.read_csv("dist_mat_final.csv")
+#dist_mat_pl = pl.read_csv("dist_mat_final.csv")
 ```
 
 
@@ -37,18 +35,20 @@ africa_AFR    = ['ACB',
                  #'ASW','ESN',
                  'GWD','LWK',
                  #'MSL',
-                 #''YRI'
+                 'YRI'
                  ]
-americas_AMR  = [#'CLM',
+americas_AMR  = ['CLM',
                 'MXL','PEL','PUR']
 east_asia_EAS = ['CDX',
-                #'CHB','CHS',
+                #'CHB',
+                'CHS',
                 'JPT','KHV']
 europe_EUR    = [#'CEU',
-                'FIN','GBR','IBS'#,
-                #'TSI'
+                'FIN','GBR','IBS',
+                 'TSI'
                 ]
-southasia_SAS = [#'BEB','GIH',
+southasia_SAS = [#'BEB',
+               'GIH',
                 'ITU','PJL','STU']
                 
 # combine into single list                
@@ -58,7 +58,7 @@ numeric_cols = africa_AFR+americas_AMR+east_asia_EAS+europe_EUR+southasia_SAS
 
 ```{python, echo = F}
 # columns with meta data
-meta_cols = ['sup_pop', 'oneKG_pop', 'country/Location', 'pop_details', 'ethnic_cultural_group',
+meta_cols = ['sup_pop', 'oneKG_pop', 'location', 'pop_details', 'ethnic_cultural_group',
        'sup_pop_alt', 'icon']
        
 # all columns used
@@ -68,32 +68,188 @@ cols_use = numeric_cols+meta_cols
 rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
 ```
 
+## Basic Table
 
-```{python, echo = F}
-from great_tables import GT, md, html, style, loc
+The basic table looks like this:
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+)
+```
+
+## Heat map with numeric values
+
+The basic table looks like this:
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+)
+```
+
+I can remove columns I don't want with `.cols_hide()`
+
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+  
+      # remove columns
+      .cols_hide(columns=[
+      #"location", # previously "country"
+      "pop_details",
+      "sup_pop",
+      "sup_pop_alt"])
+)
+```
+
+Set a header with `.tab_header()`
+
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+      #header
+      .tab_header(title="Genetic distance between 1000 Genomes populations",
+                 subtitle="Subtitle goes here"
+                  )
+  
+      # remove columns
+      .cols_hide(columns=[
+                #"location", # previously "country"
+                "pop_details",
+                "sup_pop",
+                "sup_pop_alt"]
+                )
+)
+```
+
+
+Render images in the column
+
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+      #header
+      .tab_header(title="Genetic distance between 1000 Genomes populations",
+                 subtitle="Subtitle goes here"
+                  )
+  
+      # remove columns
+      .cols_hide(columns=[
+                #"location", # previously "country"
+                "pop_details",
+                "sup_pop",
+                "sup_pop_alt"]
+                )
+      .fmt_image("icon", path="icons/")
+)
+```
+
+
+Spanner over a group of columns
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+      #header
+      .tab_header(title="Genetic distance between 1000 Genomes populations",
+                 subtitle="Subtitle goes here"
+                  )
+  
+      # remove columns
+      .cols_hide(columns=[
+                #"location", # previously "country"
+                "pop_details",
+                "sup_pop",
+                "sup_pop_alt"]
+                )
+      
+      # format images
+      .fmt_image("icon", path="icons/")
+      
+      # add a spanner over meta-data
+      .tab_spanner(
+                  label="Group",
+                  columns=[
+                          #"sup_pop", 
+                          "location",
+                          "oneKG_pop",
+                          "icon"
+                          ]
+                  )
+)
+```
+
+Move set of columns to left
+```{python}
+(
+  GT(dist_mat_pd.loc[0:10,cols_use])
+      #header
+      .tab_header(title="Genetic distance between 1000 Genomes populations",
+                 subtitle="Subtitle goes here"
+                  )
+  
+      # remove columns
+      .cols_hide(columns=[
+                #"location", # previously "country"
+                "pop_details",
+                "sup_pop",
+                "sup_pop_alt"]
+                )
+      
+      # format images
+      .fmt_image("icon", path="icons/")
+      
+      # add a spanner over meta-data
+      .tab_spanner(
+                  label="Group",
+                  columns=[
+                          #"sup_pop", 
+                          "location",
+                          "oneKG_pop",
+                          "icon"
+                          ]
+                  )
+      .cols_move_to_start(columns=[#"sup_pop", 
+                                   "location",
+                                    "oneKG_pop",
+                                    "icon"
+                                  ]
+                          )
+)
+```
+
+
+
+
+
+
+
+
+
+
+```{python, eval = T}
 # make my table
 (
     GT(dist_mat_pd.loc[rows_use,cols_use]).tab_style(
         style=style.text(size = "0"),
-        locations=loc.body(columns=num_cols)
+        locations=loc.body(columns=numeric_cols)
     )
     .tab_header(title="Genetic distance between 1000 Genomes populations",
      subtitle="Subtitle goes here"
      )
     .cols_hide(columns=[
-      "country/Location", # previously "country"
+      #"location", # previously "country"
       "pop_details",
       "sup_pop",
       "sup_pop_alt"])
     .fmt_image("icon", path="icons/")
     #.tab_stub(
-    #  rowname_col="row", 
+    #  rowname_col="oneKG_pop", 
     #  groupname_col="sup_pop"
     #)
     .tab_spanner(
         label="Group",
         columns=[
                 #"sup_pop", 
+                "location",
                 "oneKG_pop",
                 "icon"
                 ]
@@ -120,7 +276,7 @@ from great_tables import GT, md, html, style, loc
     )
     .tab_spanner(
         label="Genetic Distances",
-        columns=num_cols
+        columns=numeric_cols
     )
     .tab_spanner(
         label="Notes",
@@ -129,15 +285,22 @@ from great_tables import GT, md, html, style, loc
                  #"country_sampling"
                  ]
     )
+    .cols_move_to_start(columns=[#"sup_pop", 
+                                "location",
+                                 "oneKG_pop",
+                                "icon"
+                                ])
+
     .cols_label(
         #sup_pop = "Super population",
-        oneKG_pop = "1KG Population Code",
+        oneKG_pop = "Population Code",
+        location = "Location",
         #country_sampling = "Sampling location",
-        ethnic_cultural_group = "Ethnic / Cultural Group",
-        icon = "Geographic Origin"
+        ethnic_cultural_group = "Ethnic/Cultural Group",
+        icon = "Geography"
     )
     .cols_align(align="center")
-    .fmt_number(columns=num_cols, decimals=0, use_seps=False)
+    .fmt_number(columns=numeric_cols, decimals=0, use_seps=False)
     #.sub_zero(zero_text='nil')
     .data_color(
         domain=[90, 0],
@@ -145,9 +308,6 @@ from great_tables import GT, md, html, style, loc
         na_color="white",
     )
     .tab_source_note(source_note="Add citation")
-    .cols_move_to_start(columns=[#"sup_pop", 
-      "icon",
-                                "pop"])
 
 )
 ```
