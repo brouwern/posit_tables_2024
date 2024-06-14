@@ -113,11 +113,11 @@ ethnic_group = [
  'Han-South',
  'Japanese',
  'Kinh', # in Ho Chi Minh City, Vietnam
- 'European American',
+ 'Euro-American',
  'Finnish',
  'British / Scottish',
- 'Spainish-Iberian',
- 'Toscan-Italy',
+ 'Iberian',
+ 'Tuscan',
  'Bengali',
  'Gujarati', # Indians in Houston, Texas, USA
  'Telugu', # in the U.K.
@@ -141,20 +141,20 @@ geographic_sample = [
  'Colombia',
  'Mexico',
  'Peru',
- 'Puerto Rico',
+ 'P. Rico',
  'SE-Asia',# Chinese Dai in Xishuangbanna
  'China-NE',# Han Chinese - 1; Beijing
  'China-SE',# Han Chinese - 2; Southern China
  'Japan',
  'Vietnam',
- 'Western Europe', #European Union
+ 'W. Europe', #European Union
  'Finland',
- 'England/Scotland',
+ 'UK',
  'Spain',
  'Italy',
  'Bangladesh',
  'Gujarat',#India Gujarat, sampled in UK
- 'Andhra Pradesh/Telangana',#India Telugu, sampled in UK
+ 'Andhra Pradesh',#India Telugu, sampled in UK
  'Punjab',# Punjab, Pakistan
  'Sri Lanka']
 ```
@@ -260,13 +260,12 @@ Set the columns to None. In case numbers are shown on the final table, I want th
 
 ### Scaling:
 
-In order to increase the contrast based on color all elements are min-max scaled and set to a range of 0 to 100
+In order to increase the contrast based on color all elements are scaled relative to the maximum value observed
 
 ```{python}
 # find min/max for scaling
-global_min = dist_mat_only.min().min()
 global_max = dist_mat_only.max().max()
-dist_mat_only = (dist_mat_only-global_min)/global_max*100
+dist_mat_only = (dist_mat_only)/global_max*100
 ```
 
 ### Work with upper triangle
@@ -305,11 +304,22 @@ dist_mat_only2 = dist_mat_only2.round()
 dist_mat_only2.head()
 ```
 
+```{python}
+location_plus_space =[i + j for i, j in zip(geographic_sample,
+                                            np.repeat("<br>",dist_mat_pd.shape[0]))]
+
+
+location_plus_code = [i + j for i, j in zip(location_plus_space,
+cols_dist_mat_only)]
+```
+
+
 ## Add meta-data
 
 ```{python}
 dist_mat_only2["oneKG_pop"] = cols_dist_mat_only
 dist_mat_only2["location"] = geographic_sample #
+dist_mat_only2["location_combo"] = location_plus_code #
 dist_mat_only2["pop_details"] = pop_details
 dist_mat_only2["ethnic_cultural_group"] = ethnic_group
 dist_mat_only2["sup_pop"] = sup_pop_orig
@@ -322,7 +332,7 @@ dist_mat_only2["icon"] = icon
 I experimented with this but did not use in the final table
 
 ```{python, eval = F}
-filler_row = pd.DataFrame(np.repeat(None,dist_mat_only2shape[1])).T
+filler_row = pd.DataFrame(np.repeat(None,dist_mat_only2.shape[1])).T
 filler_row.columns = dist_mat_pd.columns
 dist_mat_only3 = pd.concat([dist_mat_only2.iloc[:7], 
               filler_row, 

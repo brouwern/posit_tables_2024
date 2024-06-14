@@ -1,11 +1,11 @@
 ---
-title: "1000 Genomes - Table"
+title: ""
 editor_options: 
   chunk_output_type: console
 ---
 
 
-```{r}
+```{r, echo = F}
 library(reticulate)
 #py_install("pandas")
 #py_install("polars")
@@ -56,10 +56,18 @@ numeric_cols = africa_AFR+americas_AMR+east_asia_EAS+europe_EUR+southasia_SAS
 
 ```
 
+
+
+
 ```{python, echo = F}
 # columns with meta data
-meta_cols = ['sup_pop', 'oneKG_pop', 'location', 'pop_details', 'ethnic_cultural_group',
-       'sup_pop_alt', 'icon']
+meta_cols = ['sup_pop', 
+             'oneKG_pop', 
+             'location', 
+             'location_combo',
+             'pop_details', 
+             'ethnic_cultural_group',
+             'sup_pop_alt', 'icon']
        
 # all columns used
 cols_use = numeric_cols+meta_cols
@@ -68,153 +76,6 @@ cols_use = numeric_cols+meta_cols
 rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
 ```
 
-## Basic Table
-
-The basic table looks like this:
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-)
-```
-
-## Heat map with numeric values
-
-The basic table looks like this:
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-)
-```
-
-I can remove columns I don't want with `.cols_hide()`
-
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-  
-      # remove columns
-      .cols_hide(columns=[
-      #"location", # previously "country"
-      "pop_details",
-      "sup_pop",
-      "sup_pop_alt"])
-)
-```
-
-Set a header with `.tab_header()`
-
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-      #header
-      .tab_header(title="Genetic distance between 1000 Genomes populations",
-                 subtitle="Subtitle goes here"
-                  )
-  
-      # remove columns
-      .cols_hide(columns=[
-                #"location", # previously "country"
-                "pop_details",
-                "sup_pop",
-                "sup_pop_alt"]
-                )
-)
-```
-
-
-Render images in the column
-
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-      #header
-      .tab_header(title="Genetic distance between 1000 Genomes populations",
-                 subtitle="Subtitle goes here"
-                  )
-  
-      # remove columns
-      .cols_hide(columns=[
-                #"location", # previously "country"
-                "pop_details",
-                "sup_pop",
-                "sup_pop_alt"]
-                )
-      .fmt_image("icon", path="icons/")
-)
-```
-
-
-Spanner over a group of columns
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-      #header
-      .tab_header(title="Genetic distance between 1000 Genomes populations",
-                 subtitle="Subtitle goes here"
-                  )
-  
-      # remove columns
-      .cols_hide(columns=[
-                #"location", # previously "country"
-                "pop_details",
-                "sup_pop",
-                "sup_pop_alt"]
-                )
-      
-      # format images
-      .fmt_image("icon", path="icons/")
-      
-      # add a spanner over meta-data
-      .tab_spanner(
-                  label="Group",
-                  columns=[
-                          #"sup_pop", 
-                          "location",
-                          "oneKG_pop",
-                          "icon"
-                          ]
-                  )
-)
-```
-
-Move set of columns to left
-```{python}
-(
-  GT(dist_mat_pd.loc[0:10,cols_use])
-      #header
-      .tab_header(title="Genetic distance between 1000 Genomes populations",
-                 subtitle="Subtitle goes here"
-                  )
-  
-      # remove columns
-      .cols_hide(columns=[
-                #"location", # previously "country"
-                "pop_details",
-                "sup_pop",
-                "sup_pop_alt"]
-                )
-      
-      # format images
-      .fmt_image("icon", path="icons/")
-      
-      # add a spanner over meta-data
-      .tab_spanner(
-                  label="Group",
-                  columns=[
-                          #"sup_pop", 
-                          "location",
-                          "oneKG_pop",
-                          "icon"
-                          ]
-                  )
-      .cols_move_to_start(columns=[#"sup_pop", 
-                                   "location",
-                                    "oneKG_pop",
-                                    "icon"
-                                  ]
-                          )
-)
-```
 
 
 
@@ -223,20 +84,19 @@ Move set of columns to left
 
 
 
-
-
-```{python, eval = T}
+```{python, echo = F}
 # make my table
 (
     GT(dist_mat_pd.loc[rows_use,cols_use]).tab_style(
         style=style.text(size = "0"),
         locations=loc.body(columns=numeric_cols)
     )
-    .tab_header(title="Genetic distance between 1000 Genomes populations",
-     subtitle="Subtitle goes here"
+    .tab_header(title=md("**Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomcs Project**"),
+     subtitle="Humans cluster into populations of genetically similar individuals, but no population is truly unique; all share genetic features with all other populations."
      )
     .cols_hide(columns=[
-      #"location", # previously "country"
+      "oneKG_pop",
+      "location", 
       "pop_details",
       "sup_pop",
       "sup_pop_alt"])
@@ -249,8 +109,8 @@ Move set of columns to left
         label="Group",
         columns=[
                 #"sup_pop", 
-                "location",
-                "oneKG_pop",
+                "location_combo",
+                #"oneKG_pop",
                 "icon"
                 ]
     )
@@ -259,7 +119,7 @@ Move set of columns to left
         columns=africa_AFR
     )
     .tab_spanner(
-        label="Americas",
+        label=html("Americas<sub>1<sub>"),
         columns=americas_AMR
     )
     .tab_spanner(
@@ -278,15 +138,16 @@ Move set of columns to left
         label="Genetic Distances",
         columns=numeric_cols
     )
-    .tab_spanner(
-        label="Notes",
-        columns=[
-                 "ethnic_cultural_group"#,
-                 #"country_sampling"
-                 ]
-    )
+    #.tab_spanner(
+    #    label="Notes",
+    #    columns=[
+    #             "ethnic_cultural_group"#,
+    #             #"country_sampling"
+    #             ]
+    #)
+    .fmt_markdown(columns=["location_combo"])
     .cols_move_to_start(columns=[#"sup_pop", 
-                                "location",
+                                "location_combo",
                                  "oneKG_pop",
                                 "icon"
                                 ])
@@ -294,7 +155,7 @@ Move set of columns to left
     .cols_label(
         #sup_pop = "Super population",
         oneKG_pop = "Population Code",
-        location = "Location",
+        location_combo = "Location",
         #country_sampling = "Sampling location",
         ethnic_cultural_group = "Ethnic/Cultural Group",
         icon = "Geography"
@@ -307,7 +168,23 @@ Move set of columns to left
         palette=["white", "orange"],
         na_color="white",
     )
-    .tab_source_note(source_note="Add citation")
+    .tab_source_note(source_note=md("**Notes**: 1. Populations in the *Americas* group are characterized by complex ancestry of indigenous peoples, Africans and Europeans due to the history of European colonization and exploitation."))
+    .tab_source_note(source_note=md("**Source**: Data for genetic variation around the OCA2 genes was derived from the 1000 Genomes Project (https://www.internationalgenome.org/)."))
+    .tab_source_note(source_note=md("**Methods**: Genetic distances between the 2500 individuals in the dataset was determined for the OCA2 gene using Euclidean distance. Color intensity represents distances between the centroids of each population.  Darker colors represent greater similarity"))
+    .opt_table_outline()
+    .tab_style(
+        style=style.borders(sides=["top"], weight='1px', color="black"),
+        locations=loc.body(rows=[0,4,8,12,16,20])
+    )
+    .tab_style(
+        style=style.borders(sides=["left"], weight='1px', color="black"),
+        locations=loc.body(columns=numeric_cols[0:20:4]),
+    )
+    .tab_style(
+        style=style.borders(sides=["right"], weight='1px', color="black"),
+        locations=loc.body(columns=numeric_cols[19]),
+    )
+    
 
 )
 ```
