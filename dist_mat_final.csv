@@ -1,4 +1,4 @@
-ACB,ASW,ESN,GWD,LWK,MSL,YRI,CLM,MXL,PEL,PUR,CDX,CHB,CHS,JPT,KHV,CEU,FIN,GBR,IBS,TSI,BEB,GIH,ITU,PJL,STU,oneKG_pop,country/Location,pop_details,ethnic_cultural_group,sup_pop,sup_pop_alt,icon
+ACB,ASW,ESN,GWD,LWK,MSL,YRI,CLM,MXL,PEL,PUR,CDX,CHB,CHS,JPT,KHV,CEU,FIN,GBR,IBS,TSI,BEB,GIH,ITU,PJL,STU,oneKG_pop,location,pop_details,ethnic_cultural_group,sup_pop,sup_pop_alt,icon
 ,,,,,,,,,,,,,,,,,,,,,,,,,,ACB,Barbados,African Caribbean in Barbados,Afro-Caribbean,AFR,,barbados.png
 18.0,,,,,,,,,,,,,,,,,,,,,,,,,,ASW,Africa,African Ancestry in SW USA,African American,AFR,,pan_africa_flag.png
 14.0,23.0,,,,,,,,,,,,,,,,,,,,,,,,,ESN,Nigeria,Esan in Nigeria,Esan,AFR,,nigeria.png

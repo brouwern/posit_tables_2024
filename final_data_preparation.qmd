@@ -309,7 +309,7 @@ dist_mat_only2.head()
 
 ```{python}
 dist_mat_only2["oneKG_pop"] = cols_dist_mat_only
-dist_mat_only2["country/Location"] = geographic_sample #
+dist_mat_only2["location"] = geographic_sample #
 dist_mat_only2["pop_details"] = pop_details
 dist_mat_only2["ethnic_cultural_group"] = ethnic_group
 dist_mat_only2["sup_pop"] = sup_pop_orig
@@ -367,7 +367,7 @@ GT(dist_mat_only2)
 
 Hidden columns:
 
--   'country/Location'
+-   'location'
 -   'pop_details'
 -   'sup_pop' (from sup_pop_orig)
 -   'sup_pop_alt'
@@ -392,7 +392,7 @@ from great_tables import GT, md, html, style, loc
      subtitle="Subtitle goes here"
      )
     .cols_hide(columns=[
-      #"country/Location", previously "country"
+      "location", previously "country"
       "pop_details",
       "sup_pop",
       "sup_pop_alt"])
@@ -407,7 +407,7 @@ from great_tables import GT, md, html, style, loc
                 #"sup_pop", 
                 "oneKG_pop",
                 "icon",
-                "country/Location"
+                "location"
                 ]
     )
     .tab_spanner(
@@ -442,7 +442,7 @@ from great_tables import GT, md, html, style, loc
                  ]
     )
     #.cols_move_to_start(columns=[#"sup_pop", 
-    #                            "country/Location",
+    #                            "location",
     #                            "oneKG_pop",
     #                            "icon"])
     #.cols_label(

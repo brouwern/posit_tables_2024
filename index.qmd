@@ -1,5 +1,5 @@
 ---
-title: "1000 Genomes - Sample information"
+title: "1000 Genomes - Table"
 editor_options: 
   chunk_output_type: console
 ---
