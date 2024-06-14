@@ -1,7 +1,29 @@
 ---
-title: "About"
+title: "About: `Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project`"
+author: "Nathan Brouwer (brouwern@gmail.com)"
 ---
 
-**Nathan L. Brouwer, PhD**
+## Abstract 
 
-brouwern at gmail.com
+My table `[Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project](https://brouwern.github.io/posit_tables_2024/)` presents a snapshot of the similarities and differences in human DNA sequences around the world using data on 20 populations from the 1000 Genomes Project. The 1000 Genomes Project
+
+.gz
+Zipped file is ~2mb
+
+## Biological background
+
+In the last 25 years one of the last scientific frontiers has been opened for exploration: the human genome. One of the great mysteries of the genome is how humans are simultaneously all so to each other, yet all posses traits unique to ourselves, our family, or our population of origin. In terms of similarity, if we lined up two people's genomes end-to-end, the sequences would be 99% the same.  However, with a length of 3.2 *billion* letters, the remaining 1% of difference results in 32 million opportunities for variation.  Much of the variation has no known impact on human traits, but can act as a record of human demography, especially where people in the past lived and where they traveled to.  Much of this variation results in changes between individuals within a population - How sick do they get from a cold? How likely are they to get cancer? Does cilantro taste like soap?  Finally, some variation results in stable differences between populations, such as the tendency historically for populations further from the equator to have lighter skin, or those in the tropics to be resistant to malaria.
+
+The Human Genome Project ushered in the genomic era, but actually only told us about the genome of about 10 different people. The [1000 Genomes Project](https://en.wikipedia.org/wiki/1000_Genomes_Project) ran from 2008 to 2015 and was one of the first project to uncatalogued variation in people around the world.  The project sampled genetic diversity from [26 different populations](https://en.wikipedia.org/wiki/1000_Genomes_Project#Human_genome_samples) around the world, including those in West and East Africa, Southern and Northern Europe, the Indian Subcontinent, China, South East Asia, the Caribbean, Central America and northern South America.  While this left out more than it included, it has provided an initial baseline for further exploration, and current projects such as the African [BioGenome Project](https://africanbiogenome.org/) are filling the sketch provided by the 1000 Genomes Project.
+
+[LinkedIn](https://www.linkedin.com/in/nathan-brouwer-phd-97100980/): www.linkedin.com/in/nathan-brouwer-phd-97100980/
+
+[GitHub](https://github.com/brouwern): https://github.com/brouwern
+
+## Packages:
+
+polars, pandas, great_tables, numpy
+
+## Repository
+
+[GitHub](https://github.com/brouwern/posit_tables_2024):https://github.com/brouwern/posit_tables_2024

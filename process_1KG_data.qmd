@@ -1,0 +1,239 @@
+---
+title: "Preparation of data from the 1000 Genomes Project"
+editor_options: 
+  chunk_output_type: console
+---
+
+## Preliminaries
+
+### Set up working environment
+
+Set up reticulate and install Python packages if needed
+
+```{r, echo = T}
+library(reticulate)
+#py_install("pandas")
+#py_install("polars")
+#py_install("seaborn")
+```
+
+Load python libraries
+
+```{python, echo = T}
+import os
+import polars as pl
+import pandas as pd
+import numpy  as np
+
+```
+
+Confirm where we are
+
+```{python}
+os.getcwd()
+os.listdir()
+```
+
+Load custom function for processing `.vcf` genomics data files.
+
+NOTE: These functions were first developed for teaching purposes and have not been optimized.
+
+```{python}
+run _vcf_function_definitions.py
+```
+
+### Load and process raw genomics data
+
+Load .gz file
+
+```{r}
+my_vcf_gz_file = '15.27999021-28345461.ALL.chr15.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz'
+bytes_to_mb = 1000000
+#os.path.getsize(my_vcf_gz_file)/bytes_to_mb
+```
+
+Convert a .vcf.gz file to a a .vcf file.
+
+```{python}
+# 
+## all .gz files are compressed
+## .vcf are a specially laid out text file
+
+vcfgz_to_gz(vcf_gz_file = my_vcf_gz_file,
+            vcf_name = "output.vcf")
+```
+
+Convert VCF file to dataframe
+
+Data from 1000 Genomes are in phased format, which represents information on the chromosome that an allele originates from (paternal or maternal). This information has many important uses, but not for what we're doing.
+
+The time it takes to do this varies a lot. ACKR1 is a small gene and takes less than 1 second. OCA2 is a large gene and takes about 20 seconds.
+
+```{python}
+# vcf_file: your .vcf file
+# csv_file: name of .csv file you want created
+phased_snps = vcf_to_df(vcf_file = "output.vcf",
+                        csv_file = "output_phased_snps.csv")
+```
+
+### Data exploration
+
+```{python}
+phased_snps.head()
+phased_snps.tail()
+phased_snps.shape
+```
+
+## Columns of a vcf file
+
+Columns we will use in this class are <u>underlined.</u>
+
+-   <u>CHROM</u> = **chromosome**
+-   <u>POS</u> = **genomic position** on chromosome
+-   <u>ID</u> = **rs code / rs ID** for SNP
+-   <u>REF</u> = the **most common allele**; typically what is in the reference genome
+-   <u>ALT</u> = **alternative allele** OR **alleles**. Usually there is only 1 alternative allele, BUT there can be moer!
+-   **QUAL** = **quality score**
+-   **FILTER** = related to quality control
+-   **INFO** = **meta-data** for each SNP
+-   **FORMAT** = format of actual SNP data; "GT" for "genotype" for us
+
+Individuals have ID codes like "**HG00096**" and "**NA21129**".
+
+The population and sex of each person is known, and if they have any children or parents also in the dataset, but this data is stored in a different file.
+
+## Featurize SNPs
+
+```{python}
+# load snps
+import pandas as pd
+csv_file = "output_phased_snps.csv"
+phased_snps = pd.read_csv(csv_file)
+```
+
+```{python}
+columns = phased_snps.columns
+columns
+
+```
+
+## Isolating mono-nucleotide, bi-allelic SNPS
+
+MOST variant in 1000 genomes are
+
+1.  mono-nucleotides
+2.  bi-allelic
+
+Mononucleotides means just 1 nucleotides: A, T, C, or G. Bi-allelic means 2 possible alleles This means that they just have single-nucleotide transition or transversion point mutations with just 2 variants. That is, some people in the world have e.g. a T at a specific genomic address, and others have a C.
+
+But, some SNPs are polymorphic - tri- or tetra-allelic: e.g, for tri-allelic, e.g some people have A, some have C, and some have T. For a tri-allelic SNP, there will be one allele listed for the REF, and two for the ALT. For tetra allelic one will be listed as REF, and 3 for the alt.
+
+Also, 1000 Genomes data also includes insertions and deletions, e.g. some people are A and others don't have an A. Finally, sometimes the variant is a dinucleotide (e.g. AA, AT, TA) or larger sequence, such as GCGCGGC.
+
+For most analyses we want just basic mono-nucleotide, bi-allelic SNPS. That is, we want only A, T, C, and G as our REF and ALT alleles, an we want just one nucleotide listed as the REF, and one as an ALT.
+
+In the code below we will explore the types of variants we have and then remove everything but bi-allelic SNPs.
+
+For related background info, see [here](https://docs.google.com/document/d/1Lgc5vVsAKyYJsCAf50Cb_T1uZbfU8TbUbUgpImRwzww/edit#bookmark=id.oyw4n2k69x05) in the outline/notes for the unit.
+
+The `.value_counts()` method counts up all the possible values that appear in a column.
+
+```{python}
+# these commands both do the same thing
+phased_snps.REF.value_counts()
+phased_snps["REF"].value_counts()
+```
+
+```{python}
+# these commands both do the same thing
+phased_snps.ALT.value_counts()
+phased_snps["ALT"].value_counts()
+```
+
+Save info on these possibilities
+
+```{python}
+var_counts_all_REF = phased_snps.REF.value_counts()
+var_counts_all_ALT = phased_snps.ALT.value_counts()
+```
+
+```{python}
+import seaborn as sns
+var_counts_all_REF = pd.Series(var_counts_all_REF)
+var_counts_all_ALT = pd.Series(var_counts_all_ALT)
+```
+
+```{python}
+sns.countplot(phased_snps, y="REF");
+```
+
+We can select what we want using the `.isin()` method of pandas dataframe. (🙈 You don't need to know how this function works)
+
+This gives us a TRUE or FALSE logical answer of whether an element is in a list.
+
+```{python}
+
+
+#🌊
+# 🙈
+real_SNPs = ["A","T","C","G"]
+onlyATCG_REF = phased_snps.REF.isin(real_SNPs)
+
+# THIS NEED TO BE FIXED
+onlyATCG_ALT = phased_snps.ALT.isin(real_SNPs)
+
+print(onlyATCG_REF[1:10])
+
+```
+
+We can now use this vector to isolated just the biallelic SNPS into a new dataframe
+
+### THIS NEEDS TO BE FIXED - need to re-run isin after first processing
+
+```{python}
+phased_snps_biallelic = phased_snps[onlyATCG_REF]
+phased_snps_biallelic = phased_snps_biallelic[onlyATCG_ALT]
+```
+
+## Removing metadata columns
+
+For most of our purposes we won't need the meta data columns
+
+# WANRING - rs IDS arean't always present!!!!
+
+```{python}
+rsID = phased_snps_biallelic.ID   # ACHTUNG  - doesn't always show up!
+POS  = phased_snps_biallelic.POS
+phased_snps_biallelic.index = POS
+```
+
+We'll make a copy of the dataframe using the `.copy()` method then remove the first 9 columns
+
+```{python}
+# copy the dtaframe
+phased_snps_biallelic2 = phased_snps_biallelic.copy()
+```
+
+```{python}
+meta_columns = phased_snps_biallelic2.columns[0:9]
+```
+
+We can then remove the specified columns using the `.drop()` method
+
+```{python}
+phased_snps_biallelic2= phased_snps_biallelic2.drop(meta_columns,
+                                                          axis=1)
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```

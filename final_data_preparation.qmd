@@ -5,6 +5,14 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+## Introduction
+
+Data for this project was processed from the original download in `.gz` format.  This script makes final changes related to formatting the data for the table, including setting adding metadata columns.
+
+
+
+
 ## Preliminaries
 
 Load reticulate so I can work in Python while in RStudio:

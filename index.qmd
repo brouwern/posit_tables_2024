@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project"
 editor_options: 
   chunk_output_type: console
 ---
@@ -91,7 +91,7 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         style=style.text(size = "0"),
         locations=loc.body(columns=numeric_cols)
     )
-    .tab_header(title=md("**Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomcs Project**"),
+    .tab_header(title=md("**Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project**"),
      subtitle="Humans cluster into populations of genetically similar individuals, but no population is truly unique; all share genetic features with all other populations."
      )
     .cols_hide(columns=[
