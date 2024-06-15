@@ -168,6 +168,7 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         style=style.borders(sides=["right"], weight='1px', color="black"),
         locations=loc.body(columns=numeric_cols[19]),
     )
+    .tab_options(table_width = "120%")
     .tab_options(heading_title_font_size = "120%")
     .tab_options(heading_subtitle_font_size = "120%")
     .tab_options(column_labels_font_size = "120%")
