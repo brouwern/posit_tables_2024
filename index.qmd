@@ -4,7 +4,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r, echo = F}
 library(reticulate)
 #py_install("pandas")
@@ -19,14 +18,10 @@ import numpy as np
 from great_tables import GT, md, html, style, loc
 ```
 
-
-
 ```{python, echo = F}
 dist_mat_pd = pd.read_csv("dist_mat_final.csv")
 #dist_mat_pl = pl.read_csv("dist_mat_final.csv")
 ```
-
-
 
 ```{python, echo = F}
 # Define groups for spanners
@@ -56,9 +51,6 @@ numeric_cols = africa_AFR+americas_AMR+east_asia_EAS+europe_EUR+southasia_SAS
 
 ```
 
-
-
-
 ```{python, echo = F}
 # columns with meta data
 meta_cols = ['sup_pop', 
@@ -75,14 +67,6 @@ cols_use = numeric_cols+meta_cols
 # rows used
 rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
 ```
-
-
-
-
-
-
-
-
 
 ```{python, echo = F}
 # make my table
@@ -158,7 +142,7 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         location_combo = "Location",
         #country_sampling = "Sampling location",
         ethnic_cultural_group = "Ethnic/Cultural Group",
-        icon = "Geography"
+        icon = ""
     )
     .cols_align(align="center")
     .fmt_number(columns=numeric_cols, decimals=0, use_seps=False)
@@ -184,8 +168,13 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         style=style.borders(sides=["right"], weight='1px', color="black"),
         locations=loc.body(columns=numeric_cols[19]),
     )
+    .tab_options(heading_title_font_size = "120%")
+    .tab_options(heading_subtitle_font_size = "120%")
+    .tab_options(column_labels_font_size = "120%")
+    .tab_options(column_labels_font_weight = "bold")
+    .tab_options(column_labels_font_weight = "bold")
+
     
 
 )
 ```
-

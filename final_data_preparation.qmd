@@ -5,17 +5,13 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ## Introduction
 
-Data for this project was processed from the original download in `.gz` format.  This script makes final changes related to formatting the data for the table, including setting adding metadata columns.
-
-
-
+Data for this project was processed from the original download in `.gz` format. This script makes final changes related to formatting the data for the table, including setting adding metadata columns.
 
 ## Preliminaries
 
-Load reticulate so I can work in Python while in RStudio:
+Load reticulated so I can work in Python while in RStudio:
 
 ```{r, echo = T, warning = F, message = F}
 library(reticulate)
@@ -135,7 +131,7 @@ ethnic_group = [
 
 This next list contains the country the samples were collected in, their historical geographic origins, or where the group has the largest populations. In several cases data were collected "in diaspora" and the geographic location assigned to the origin as reported by the 1000 Genomes Project. Therefore, Indians living in the UK were assigned to India. For African-American and European-Americans, "Africa" and "Europe" were used.
 
-Note that the Dai were sampled from China. Wikipedia states "The Dai people form one of the 56 ethnic groups officially recognized by the People's Republic of China. By extension, the term can apply to groups in Laos, Vietnam, Thailand and Myanmar when Dai is used to mean specifically Tai Yai, Lue, Chinese Shan, Tai Dam, Tai Khao or even Tai in general." ([en.wikipedia.org/wiki/Dai_people](https://en.wikipedia.org/wiki/Dai_people)) I therefore coded them as "SE-Asia"
+Note that the Dai were sampled from China. Wikipedia states "The Dai people form one of the 56 ethnic groups officially recognized by the People's Republic of China. By extension, the term can apply to groups in Laos, Vietnam, Thailand and Myanmar when Dai is used to mean specifically Tai Yai, Lue, Chinese Shan, Tai Dam, Tai Khao or even Tai in general." ([en.Wikipedia.org/wiki/Dai_people](https://en.wikipedia.org/wiki/Dai_people)) I therefore coded them as "SE-Asia"
 
 ```{python}
 geographic_sample = [
@@ -209,7 +205,7 @@ Unresolved:
 -   For European Americans the European Union flag could be used used.
 -   Chinese Dai?
 -   Gujarat - Use state flag?
--   Telgu - use state flag?
+-   Telugu - use state flag?
 
 The Chin
 
@@ -258,7 +254,6 @@ dist_mat_only = dist_mat_pd.drop(["sup_pop","pop"], axis = 1)
 # save new column names
 cols_dist_mat_only = dist_mat_only.columns
 ```
-
 
 Set the columns to None. In case numbers are shown on the final table, I want the diagonal to be blank, which can be done in great_tables. This could also be done with numpy.diagonal, but in this case I knew that the diagonal elements are all 0 (or very very close).
 
@@ -320,7 +315,6 @@ location_plus_space =[i + j for i, j in zip(geographic_sample,
 location_plus_code = [i + j for i, j in zip(location_plus_space,
 cols_dist_mat_only)]
 ```
-
 
 ## Add meta-data
 

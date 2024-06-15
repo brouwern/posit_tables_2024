@@ -6,6 +6,7 @@ format: html
 # Build table
 
 ## Load data
+
 ```{python}
 import polars as pl
 import pandas as pd
@@ -16,7 +17,6 @@ dist_mat_pd = pd.read_csv("distance_matrix.csv")
 ```
 
 ## Prep
-
 
 ```{python}
 # columns that will be numeric in table
@@ -147,8 +147,6 @@ icon = ['barbados.png',
  'sri_lanka.png']
 ```
 
-
-
 ```{python}
 # isolate distance matrix
 columns =  dist_mat_pd.columns
@@ -197,8 +195,7 @@ sup_pop_alt = ["","","","AFR","","","",
 dist_mat_pd.sup_pop = sup_pop_alt
 ```
 
-pop_details
-country
+pop_details country
 
 ```{python}
 dist_mat_pd["country"] = country_sampling
@@ -210,7 +207,6 @@ dist_mat_pd["icon"] = icon
 
 
 ```
-
 
 ```{python}
 dist_mat_pd.head()
@@ -229,7 +225,6 @@ dist_mat_pd = pd.read_csv("dist_mat_final.csv")
 dist_mat_pl = pl.read_csv("dist_mat_final.csv")
 ```
 
-
 ```{python}
 dist_mat_pd.head()
 ```
@@ -237,8 +232,6 @@ dist_mat_pd.head()
 ```{python}
 GT(dist_mat_pd)
 ```
-
-
 
 ```{python}
 dist_mat_pd.head()
@@ -266,7 +259,6 @@ dist_mat_pd2 = pd.concat([dist_mat_pd.iloc[:7],
 dist_mat_pd2.head()
 ```
 
-
 ```{python}
 #temp = dist_mat_pd[["sup_pop","pop","ethnic_cultural_group","country_sampling","icon"]]
 #(
@@ -274,6 +266,7 @@ dist_mat_pd2.head()
 #    .fmt_image("icon", path="icons/")
 #)
 ```
+
 ```{python}
 from great_tables import GT, md, html
 # make my table
@@ -344,9 +337,6 @@ from great_tables import GT, md, html
 
 )
 ```
-
-
-
 
 ```{python}
 !quarto publish quarto-pub
