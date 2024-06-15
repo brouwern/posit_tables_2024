@@ -1,5 +1,5 @@
 ---
-title: "Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project"
+title: "Genetic similarities and differences between humans"
 editor_options: 
   chunk_output_type: console
 ---

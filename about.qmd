@@ -1,29 +1,30 @@
 ---
-title: "About: Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project"
+title: "About"
 author: "Nathan Brouwer (brouwern@gmail.com)"
 ---
-
-## Abstract
-
-My table [Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project](https://brouwern.github.io/posit_tables_2024/) presents a snapshot of the similarities and differences in human DNA sequences around using data from the 1000 Genomes Project. The 1000 Genomes Project
-
-.gz Zipped file is \~2mb Unzipped 98 mb
-
-.gz .vcf \~2500 people 10,074 variants
-
-## Biological background
-
-In the last 25 years one of the last scientific frontiers has been opened for exploration: the human genome. One of the great mysteries of the genome is how humans are simultaneously all so to each other, yet all posses traits unique to ourselves, our family, or our population of origin. In terms of similarity, if we lined up two people's genomes end-to-end, the sequences would be 99% the same. However, with a length of 3.2 *billion* letters, the remaining 1% of difference results in 32 million opportunities for variation. Much of the variation has no known impact on human traits, but can act as a record of human demography, especially where people in the past lived and where they traveled to. Much of this variation results in changes between individuals within a population - How sick do they get from a cold? How likely are they to get cancer? Does cilantro taste like soap? Finally, some variation results in stable differences between populations, such as the tendency historically for populations further from the equator to have lighter skin, or those in the tropics to be resistant to malaria.
-
-The Human Genome Project ushered in the genomic era, but actually only told us about the genome of about 10 different people. The [1000 Genomes Project](https://en.wikipedia.org/wiki/1000_Genomes_Project) ran from 2008 to 2015 and was one of the first project to uncatalogued variation in people around the world. The project sampled genetic diversity from [26 different populations](https://en.wikipedia.org/wiki/1000_Genomes_Project#Human_genome_samples) around the world, including those in West and East Africa, Southern and Northern Europe, the Indian Subcontinent, China, South East Asia, the Caribbean, Central America and northern South America. While this left out more than it included, it has provided an initial baseline for further exploration, and current projects such as the African [BioGenome Project](https://africanbiogenome.org/) are filling the sketch provided by the 1000 Genomes Project.
 
 [LinkedIn](https://www.linkedin.com/in/nathan-brouwer-phd-97100980/): [www.linkedin.com/in/nathan-brouwer-phd-97100980/](linkedin.com/in/nathan-brouwer-phd-97100980/)
 
 [GitHub](https://github.com/brouwern): [https://github.com/brouwern](github.com/brouwern)
 
+## Abstract
+
+My table [Genetic similarities and differences between humans](https://brouwern.github.io/posit_tables_2024/) presents a snapshot of the similarities and differences in human DNA sequences using data from the 1000 Genomes Project. The 1000 Genomes Project sampled data from ~2500 individuals from 26 populations. For this table, genomics variants were extracted from the 1000 Genomes data set from the OCA2 gene, a region of ~350,000 DNA bases on chromosome 15.  Within this region are ~10,000 locations where humans typically vary, e.g., where one person has an "A" in their genetic code and another has "T", "C", or "G". Data from these 10,000 locations were extracted from their source text format into a `**Polars**` dataframe, converted from text ("A", "T", "C" or "G") to numeric values, and the centroid in 10,000 dimensional space for each population determined.  The Euclidean distance between centroids was calculated using `scikitlearn` to represent the average genetic distance between individuals in difference populations.  If individuals in two populations typically have similar sequences in their OCA2 gene then the genetic distance is low, while populations with numerous differences would have large genetic distances.  The genetic distance data was formatted in `Pandas` and `numpy` and a heatmap created using `great_tables`. 
+
+The dataset used in this analysis represents only about 0.01% of the human genome, and the performance improvements of `Polars` has great potential for facilitating direct analysis of such data in `Python`. The current code unfortunately does not use `Polars` very deftly yet still yields substantial performance improvements over `Pandas`.
+
+
+## Biological background
+
+In the last 25 years one of the last scientific frontiers has been opened for exploration: the human genome. One of the great mysteries of the genome is how humans are simultaneously all so similar to each other, yet all posses traits unique to ourselves, our family, or our population of origin. In terms of similarity, if we line up two people's genomes end-to-end, the sequences are typically >99% the same. However, with a length of 3.2 *billion* letters, the remaining 1% of differences results in 32 million opportunities for variation. Much of the variation has no known impact on human traits, but can act as a record of human demography, especially where people in the past lived and where they traveled to. Much of this variation results in changes between individuals within a population - How sick do they get from a cold? How likely are they to get cancer? Does cilantro taste like soap? Finally, some variation results in stable differences between populations, such as the tendency historically for populations further from the equator to have lighter skin, or those in the tropics to be resistant to malaria.
+
+The Human Genome Project ushered in the genomic era, but actually only told us about the genome of about 10 different people. The [1000 Genomes Project](https://en.wikipedia.org/wiki/1000_Genomes_Project) ran from 2008 to 2015 and was one of the first project to catalogued variation in people around the world. The project sampled genetic diversity from [26 different populations](https://en.wikipedia.org/wiki/1000_Genomes_Project#Human_genome_samples) around the globe, including those in West and East Africa, Southern and Northern Europe, the Indian Subcontinent, China, South East Asia, the Caribbean, Central America and northern South America. While this left out much more than it included, it has provided an initial baseline for further exploration, and current projects such as the African [BioGenome Project](https://africanbiogenome.org/) are filling out the sketch provided by the 1000 Genomes Project.
+
+
+
 ## Packages:
 
-polars, pandas, great_tables, numpy
+polars, pandas, scikitlearn, great_tables, numpy
 
 ## Code repository
 
