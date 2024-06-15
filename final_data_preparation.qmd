@@ -461,7 +461,7 @@ from great_tables import GT, md, html, style, loc
     #    #sup_pop = "Super population",
     #    oneKG_pop = "Population Code",
     #    #country_sampling = "Sampling location",
-    #    ethnic_cultural_group = "Ethnic / Cultural Group",
+    #    ethnic_cultural_group = "Ethnic / <br> Cultural Group",
     #    icon = "Geographic origin"
     #)
     .cols_align(align="center")

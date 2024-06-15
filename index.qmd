@@ -4,6 +4,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+Humans cluster into populations of genetically similar individuals, but no population is truly unique; all share genetic features with all other populations. Clusters are evident by dark colors along the diagonal of the heatmap.  Shared genetic features with geographically distant populations are evident in coloration in the off-diagonal elements.
+
 ```{r, echo = F}
 library(reticulate)
 #py_install("pandas")
@@ -75,9 +77,8 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         style=style.text(size = "0"),
         locations=loc.body(columns=numeric_cols)
     )
-    .tab_header(title=md("**Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project**"),
-     subtitle="Humans cluster into populations of genetically similar individuals, but no population is truly unique; all share genetic features with all other populations."
-     )
+    #.tab_header(title=md("**Unity in Diversity: Genetic similarities and differences between regional populations in the 1000 Genomics Project**"),
+    # subtitle="Humans cluster into populations of genetically similar individuals, but no population is truly unique; all share genetic features with all other populations.")
     .cols_hide(columns=[
       "oneKG_pop",
       "location", 
@@ -141,7 +142,7 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         oneKG_pop = "Population Code",
         location_combo = "Location",
         #country_sampling = "Sampling location",
-        ethnic_cultural_group = "Ethnic/Cultural Group",
+        ethnic_cultural_group = md("Ethnic/ <br> Cultural Group"),
         icon = ""
     )
     .cols_align(align="center")
@@ -168,10 +169,10 @@ rows_use = dist_mat_pd.oneKG_pop.isin(numeric_cols)
         style=style.borders(sides=["right"], weight='1px', color="black"),
         locations=loc.body(columns=numeric_cols[19]),
     )
-    .tab_options(table_width = "120%")
-    .tab_options(heading_title_font_size = "120%")
-    .tab_options(heading_subtitle_font_size = "120%")
-    .tab_options(column_labels_font_size = "120%")
+    #.tab_options(table_width = "200%")
+    #.tab_options(heading_title_font_size = "120%")
+    #.tab_options(heading_subtitle_font_size = "120%")
+    .tab_options(column_labels_font_size = "100%")
     .tab_options(column_labels_font_weight = "bold")
     .tab_options(column_labels_font_weight = "bold")
 
